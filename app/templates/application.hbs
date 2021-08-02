@@ -1,3 +1,15 @@
 {{page-title "SpanishTexter"}}
 
-{{outlet}}
+<div>
+  <nav class="flex items-center justify-end py-4 px-8">
+    <LinkTo @route={{if this.session.isAuthenticated "authenticated.logout" "login"}}>
+      {{#if this.session.isAuthenticated}}
+        Log Out
+      {{else}}
+        Log In
+      {{/if}}
+    </LinkTo>
+  </nav>
+
+  {{outlet}}
+</div>

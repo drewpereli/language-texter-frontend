@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class LoginController extends Controller {
   @service session;
+  @service router;
 
   @tracked username;
   @tracked password;
@@ -24,7 +25,7 @@ export default class LoginController extends Controller {
     }
 
     if (this.session.isAuthenticated) {
-      console.log('success!');
+      this.router.transitionTo('authenticated.home');
     }
   }
 }

@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class LoginRoute extends Route {
+export default class AuthenticatedLogoutRoute extends Route {
   @service session;
 
   beforeModel() {
-    this.session.prohibitAuthentication('authenticated.home');
+    this.session.invalidate();
   }
 }
