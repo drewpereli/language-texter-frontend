@@ -1,10 +1,19 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const tailwindcss = require('tailwindcss');
+const autoprefixer = require('autoprefixer');
 
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
-    // Add options here
+    postcssOptions: {
+      compile: {
+        plugins: [tailwindcss('./tailwind.config.js')],
+      },
+      filter: {
+        plugins: [autoprefixer],
+      },
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
