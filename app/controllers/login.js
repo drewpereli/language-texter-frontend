@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class LoginController extends Controller {
   @service session;
-  @service router;
+  @service flashMessages;
 
   @tracked username;
   @tracked password;
@@ -18,14 +18,10 @@ export default class LoginController extends Controller {
       yield this.session.authenticate('authenticator:jwt', { username, password });
     } catch (error) {
       if (error.status === 401) {
-        this.errorMessage = 'Invalid username or password';
+        this.flashMessages.danger('Invalid username or password');
       } else {
-        this.errorMessage = 'There was an error. Please try again later.';
+        this.flashMessages.danger('There was an error. Please try again later.');
       }
-    }
-
-    if (this.session.isAuthenticated) {
-      this.router.transitionTo('authenticated.home');
     }
   }
 }

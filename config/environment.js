@@ -53,5 +53,9 @@ module.exports = function (environment) {
     refreshAccessTokens: false,
   };
 
+  ENV['ember-simple-auth'] = {
+    routeAfterAuthentication: 'authenticated.home',
+  };
+
   return ENV;
 };
