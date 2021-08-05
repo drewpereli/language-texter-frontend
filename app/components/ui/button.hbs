@@ -1,0 +1,14 @@
+<button
+  type="button"
+  {{on "click" this.onClick}}
+  class="shadow-sm hover:shadow rounded text-white text-opacity-80 {{this.colorClasses}} {{this.sizeClasses}}"
+  ...attributes
+>
+  {{#if @icon}}
+    <FaIcon @icon={{@icon}} />
+  {{/if}}
+
+  {{#if @label}}
+    <span class="ml-1 first:ml-0">{{@label}}</span>
+  {{/if}}
+</button>

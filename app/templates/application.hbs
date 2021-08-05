@@ -1,6 +1,6 @@
 {{page-title "SpanishTexter"}}
 
-<div>
+<div class="h-screen w-screen">
   <nav class="flex items-center justify-end py-4 px-8">
     <LinkTo @route={{if this.session.isAuthenticated "authenticated.logout" "login"}}>
       {{#if this.session.isAuthenticated}}
@@ -12,4 +12,10 @@
   </nav>
 
   {{outlet}}
+
+  <div class="absolute bottom-8 right-8">
+    {{#each this.flashMessages.queue as |flash|}}
+      <FlashMessage @flash={{flash}} />
+    {{/each}}
+  </div>
 </div>

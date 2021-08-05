@@ -1,0 +1,49 @@
+<div class="flex py-2 items-center even:bg-gray-600 odd:bg-gray-700 px-4">
+  <div class="w-1/3 flex-shrink-0 pr-4">
+    {{#if this.isNewOrEditing}}
+      <Ui::Input
+        @value={{@challenge.spanishText}}
+        @label="spanish"
+        @onChangeValue={{fn (mut @challenge.spanishText)}}
+      />
+    {{else}}
+      {{@challenge.spanishText}}
+    {{/if}}
+  </div>
+
+  <div class="w-1/3 flex-shrink-0 pr-4">
+    {{#if this.isNewOrEditing}}
+      <Ui::Input
+        @value={{@challenge.englishText}}
+        @label="english"
+        @onChangeValue={{fn (mut @challenge.englishText)}}
+      />
+    {{else}}
+      {{@challenge.englishText}}
+    {{/if}}
+  </div>
+
+  <div class="w-1/12 flex-shrink-0 pr-4">
+    {{#if this.isNewOrEditing}}
+      <Ui::Input
+        @value={{@challenge.requiredStreakForCompletion}}
+        @label="streak"
+        @onChangeValue={{fn (mut @challenge.requiredStreakForCompletion)}}
+        @type="number"
+      />
+    {{else}}
+      {{@challenge.requiredStreakForCompletion}}
+    {{/if}}
+  </div>
+
+  <div class="w-1/4 flex-shrink-0 h-full flex items-center justify-end">
+    {{#if this.isNewOrEditing}}
+      <div class="self-end flex">
+        <Ui::Button @task={{this.saveChallenge}} @variant="primary" @label="Save" @icon="save" @size="sm" />
+        <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" @size="sm" class="ml-2" />
+      </div>
+    {{else}}
+      <Ui::Button @onClick={{fn (mut this.isEditing) true}}  @variant="secondary" @label="Edit" @icon="edit" @size="sm" />
+    {{/if}}
+  </div>
+</div>
