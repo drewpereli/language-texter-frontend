@@ -7,7 +7,7 @@ export default class AuthenticatedRoute extends Route {
   beforeModel(transition) {
     let authenticated = this.session.requireAuthentication(transition, 'login');
 
-    if (authenticated) {
+    if (authenticated && transition.targetName === 'authenticated.index') {
       this.transitionTo('authenticated.home');
     }
   }
