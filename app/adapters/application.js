@@ -16,4 +16,14 @@ export default class ApplicationAdapter extends ActiveModelAdapter {
       return {};
     }
   }
+
+  changePassword({ oldPassword, newPassword, newPasswordConfirmation }) {
+    let data = {
+      old_password: oldPassword,
+      new_password: newPassword,
+      new_password_confirmation: newPasswordConfirmation,
+    };
+
+    return this.ajax(`${this.host}/change_password`, 'POST', { data });
+  }
 }

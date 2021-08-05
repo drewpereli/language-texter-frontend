@@ -2,7 +2,17 @@
 
 <div class="h-screen w-screen">
   <nav class="flex items-center justify-end py-4 px-8">
-    <LinkTo @route={{if this.session.isAuthenticated "authenticated.logout" "login"}}>
+    {{#if this.session.isAuthenticated}}
+      <LinkTo @route="authenticated.home">
+        Home
+      </LinkTo>
+
+      <LinkTo @route="authenticated.change-password" class="ml-8">
+        Change Password
+      </LinkTo>
+    {{/if}}
+
+    <LinkTo @route={{if this.session.isAuthenticated "authenticated.logout" "login"}} class="ml-8 first:ml-0">
       {{#if this.session.isAuthenticated}}
         Log Out
       {{else}}

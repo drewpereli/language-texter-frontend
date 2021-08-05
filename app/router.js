@@ -11,5 +11,6 @@ Router.map(function () {
   this.route('authenticated', { path: '' }, function () {
     this.route('home');
     this.route('logout');
+    this.route('change-password');
   });
 });
