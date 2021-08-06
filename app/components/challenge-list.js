@@ -6,12 +6,7 @@ export default class ChallengeListComponent extends Component {
   @service store;
 
   get challenges() {
-    let challenges = this.store.peekAll('challenge');
-
-    let newChallenges = challenges.filterBy('isNew');
-    let oldChallenges = challenges.rejectBy('isNew');
-
-    return [...newChallenges, ...oldChallenges];
+    return this.store.peekAll('challenge').sortBy('isNew', 'createdAt').reverse();
   }
 
   @action

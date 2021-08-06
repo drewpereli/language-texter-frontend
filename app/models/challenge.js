@@ -6,6 +6,7 @@ export default class ChallengeModel extends Model {
   @attr('number', { defaultValue: 20 }) requiredStreakForCompletion;
   @attr('number') currentStreak;
   @attr('boolean', { defaultValue: false }) isComplete;
+  @attr('date') createdAt;
 
   @belongsTo('user', { async: false }) user;
 }
