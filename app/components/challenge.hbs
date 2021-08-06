@@ -42,8 +42,12 @@
         <Ui::Button @task={{this.saveChallenge}} @variant="primary" @label="Save" @icon="save" @size="sm" />
         <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" @size="sm" class="ml-2" />
       </div>
+    {{else if this.showDeleteConfirmation}}
+      <Ui::Button @task={{this.destroyChallenge}}  @variant="danger" @label="Delete" @icon="trash" @size="sm" />
+      <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) false}}  @variant="secondary" @label="Cancel" @icon="window-close" @size="sm"  class="ml-2" />
     {{else}}
       <Ui::Button @onClick={{fn (mut this.isEditing) true}}  @variant="secondary" @label="Edit" @icon="edit" @size="sm" />
+      <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) true}}  @variant="danger" @icon="trash" @size="sm" class="ml-2" />
     {{/if}}
   </div>
 </div>

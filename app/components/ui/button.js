@@ -16,6 +16,8 @@ export default class UiButtonComponent extends Component {
       return 'bg-blue-700 hover:bg-blue-600';
     } else if (this.args.variant === 'secondary') {
       return 'bg-gray-500 hover:bg-gray-400';
+    } else if (this.args.variant === 'danger') {
+      return 'bg-red-700 hover:bg-red-600';
     } else {
       return '';
     }

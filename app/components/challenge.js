@@ -11,6 +11,7 @@ export default class ChallengeComponent extends Component {
   @service flashMessages;
 
   @tracked isEditing = false;
+  @tracked showDeleteConfirmation = false;
 
   get isNewOrEditing() {
     return this.args.challenge.isNew || this.isEditing;
@@ -39,5 +40,17 @@ export default class ChallengeComponent extends Component {
     }
 
     this.isEditing = false;
+  }
+
+  @task
+  *destroyChallenge() {
+    try {
+      yield this.args.challenge.destroyRecord();
+      this.flashMessages.success('Challenge deleted');
+      this.showDeleteConfirmation = false;
+    } catch (error) {
+      this.flashMessages.danger('There was an error deleting the challenge. Please try again later.');
+      console.log(error);
+    }
   }
 }
