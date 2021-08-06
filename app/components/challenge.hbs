@@ -1,5 +1,5 @@
-<div class="flex py-2 items-center even:bg-gray-600 odd:bg-gray-700 px-4">
-  <div class="w-1/3 flex-shrink-0 pr-4">
+<div class="flex flex-col p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
+  <div>
     {{#if this.isNewOrEditing}}
       <Ui::Input
         @value={{@challenge.spanishText}}
@@ -7,11 +7,14 @@
         @onChangeValue={{fn (mut @challenge.spanishText)}}
       />
     {{else}}
-      {{@challenge.spanishText}}
+      <div>
+        <span class="font-bold text-gray-400">Spanish:</span>
+        <span class="ml-1">"{{@challenge.spanishText}}"</span>
+      </div>
     {{/if}}
   </div>
 
-  <div class="w-1/3 flex-shrink-0 pr-4">
+  <div class="mt-6">
     {{#if this.isNewOrEditing}}
       <Ui::Input
         @value={{@challenge.englishText}}
@@ -19,35 +22,47 @@
         @onChangeValue={{fn (mut @challenge.englishText)}}
       />
     {{else}}
-      {{@challenge.englishText}}
+      <div>
+        <span class="font-bold text-gray-400">English:</span>
+        <span class="ml-1">"{{@challenge.englishText}}"</span>
+      </div>
     {{/if}}
   </div>
 
-  <div class="w-1/12 flex-shrink-0 pr-4">
+  <div class="mt-6">
     {{#if this.isNewOrEditing}}
       <Ui::Input
         @value={{@challenge.requiredStreakForCompletion}}
-        @label="streak"
+        @label="required streak for completion"
         @onChangeValue={{fn (mut @challenge.requiredStreakForCompletion)}}
         @type="number"
       />
     {{else}}
-      {{@challenge.currentStreak}}/{{@challenge.requiredStreakForCompletion}}
+      <div>
+        <div class="font-bold text-gray-400">Current Streak</div>
+        <div class="relative w-full h-6 rounded-full overflow-hidden bg-gray-400 mt-3">
+          <div class="absolute top-0 left-0 bg-green-400 h-full" style={{this.streakBarInnerStyle}} />
+          <div class="absolute top-0 left-0 h-full text-gray-900 font-mono text-sm pl-4 flex items-center">
+            {{@challenge.currentStreak}}/{{@challenge.requiredStreakForCompletion}}
+          </div>
+        </div>
+      </div>
     {{/if}}
   </div>
 
-  <div class="w-1/4 flex-shrink-0 h-full flex items-center justify-end">
+  <div class="mt-8 flex items-center justify-end">
     {{#if this.isNewOrEditing}}
       <div class="self-end flex">
         <Ui::Button @task={{this.saveChallenge}} @variant="primary" @label="Save" @icon="save" @size="sm" />
         <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" @size="sm" class="ml-2" />
       </div>
     {{else if this.showDeleteConfirmation}}
-      <Ui::Button @task={{this.destroyChallenge}}  @variant="danger" @label="Delete" @icon="trash" @size="sm" />
+      Delete this challenge?
+      <Ui::Button @task={{this.destroyChallenge}}  @variant="danger" @label="Yes, delete" @icon="trash" @size="sm" class="ml-2" />
       <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) false}}  @variant="secondary" @label="Cancel" @icon="window-close" @size="sm"  class="ml-2" />
     {{else}}
       <Ui::Button @onClick={{fn (mut this.isEditing) true}}  @variant="secondary" @label="Edit" @icon="edit" @size="sm" />
-      <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) true}}  @variant="danger" @icon="trash" @size="sm" class="ml-2" />
+      <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) true}}  @variant="danger" @icon="trash" @label="Delete" @size="sm" class="ml-2" />
     {{/if}}
   </div>
 </div>

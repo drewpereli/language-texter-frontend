@@ -17,6 +17,17 @@ export default class ChallengeComponent extends Component {
     return this.args.challenge.isNew || this.isEditing;
   }
 
+  get streakBarInnerStyle() {
+    let completionFraction = Math.min(
+      this.args.challenge.currentStreak / this.args.challenge.requiredStreakForCompletion,
+      1
+    );
+
+    let completionPercentage = 100 * completionFraction;
+
+    return `width: ${completionPercentage}%`;
+  }
+
   @task
   *saveChallenge() {
     try {
