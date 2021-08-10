@@ -67,10 +67,13 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-qunit": "^6.1.1",
     "loader.js": "^4.7.0",
+    "moment": "^2.29.1",
     "npm-run-all": "^4.1.5",
+    "plotly.js": "^2.3.1",
     "prettier": "^2.3.0",
     "qunit": "^2.15.0",
     "qunit-dom": "^1.6.0",
+    "stream-browserify": "^3.0.0",
     "tailwindcss": "^2.2.7",
     "wordcloud": "^1.2.2"
   },

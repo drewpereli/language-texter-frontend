@@ -6,6 +6,13 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
+    autoImport: {
+      webpack: {
+        node: {
+          global: true,
+        },
+      },
+    },
     postcssOptions: {
       compile: {
         plugins: [tailwindcss('./tailwind.config.js')],
