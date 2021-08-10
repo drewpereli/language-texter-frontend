@@ -1,7 +1,7 @@
 {{!-- template-lint-disable no-invalid-interactive --}}
-<div class="relative flex flex-col items-center" {{on "mouseout" this.onMouseout}}>
+<div class="relative flex flex-col items-center" {{on "mouseout" this.onMouseout}} ...attributes>
   <h3 class="text-sm text-center font-bold">Attempts at translating "{{this.queryText}}" to {{@attemptLanguage}}</h3>
-  <canvas class="mt-4 bg-gray-200 rounded border border-gray-400" {{did-insert this.onInsertCanvas}} ...attributes>
+  <canvas class="mt-4 bg-gray-200 rounded border border-gray-400" {{did-insert this.onInsertCanvas}}>
   </canvas>
 
   {{#if this.showTooltip}}

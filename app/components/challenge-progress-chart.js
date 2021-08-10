@@ -69,7 +69,7 @@ export default class ChallengeProgressChartComponent extends Component {
     let bgColor = '#222';
 
     return {
-      title: { text: `"${this.args.challenge.spanishText}" progress`, font: { color: textColor } },
+      title: false,
       xaxis: {
         title: 'Attempt Date',
         color: textColor,
