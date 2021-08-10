@@ -13,5 +13,6 @@ Router.map(function () {
     this.route('home-redirect', { path: '/home' });
     this.route('logout');
     this.route('change-password');
+    this.route('challenge', { path: '/challenges/:challenge_id' });
   });
 });

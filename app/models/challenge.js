@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
 export default class ChallengeModel extends Model {
   @attr('string') spanishText;
@@ -9,4 +9,6 @@ export default class ChallengeModel extends Model {
   @attr('date') createdAt;
 
   @belongsTo('user', { async: false }) user;
+
+  @hasMany('attempts', { async: false }) attempts;
 }

@@ -49,6 +49,7 @@
     "ember-data": "~3.27.1",
     "ember-export-application-global": "^2.0.1",
     "ember-fetch": "^8.0.4",
+    "ember-inflector": "^4.0.2",
     "ember-load-initializers": "^2.1.2",
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-page-title": "^6.2.2",
@@ -70,7 +71,8 @@
     "prettier": "^2.3.0",
     "qunit": "^2.15.0",
     "qunit-dom": "^1.6.0",
-    "tailwindcss": "^2.2.7"
+    "tailwindcss": "^2.2.7",
+    "wordcloud": "^1.2.2"
   },
   "engines": {
     "node": "10.* || >= 12"

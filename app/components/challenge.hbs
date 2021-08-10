@@ -7,9 +7,13 @@
         @onChangeValue={{fn (mut @challenge.spanishText)}}
       />
     {{else}}
-      <div>
-        <span class="font-bold text-gray-400">Spanish:</span>
-        <span class="ml-1">"{{@challenge.spanishText}}"</span>
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="font-bold text-gray-400">Spanish:</span>
+          <span class="ml-1">"{{@challenge.spanishText}}"</span>
+        </div>
+
+        <LinkTo @route="authenticated.challenge" @model={{@challenge.id}}>See Progress</LinkTo>
       </div>
     {{/if}}
   </div>
