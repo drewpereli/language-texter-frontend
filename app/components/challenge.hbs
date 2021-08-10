@@ -13,7 +13,7 @@
           <span class="ml-1">"{{@challenge.spanishText}}"</span>
         </div>
 
-        <LinkTo @route="authenticated.challenge" @model={{@challenge.id}}>See Progress</LinkTo>
+        <LinkTo @route="authenticated.challenge" class="text-gray-400 underline hover:text-gray-300" @model={{@challenge.id}}>View Progress</LinkTo>
       </div>
     {{/if}}
   </div>
