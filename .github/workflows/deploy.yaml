@@ -1,0 +1,34 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node 14.16.1
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.16.1'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build app
+        run: npm run build
+
+      - name: Deploy
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: dist/*
+          target: ${{ secrets.REMOTE_DIR }}
+          strip_components: 1
