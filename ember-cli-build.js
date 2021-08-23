@@ -2,6 +2,7 @@
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const tailwindcss = require('tailwindcss');
+const purgecss = require('@fullhuman/postcss-purgecss');
 const autoprefixer = require('autoprefixer');
 
 module.exports = function (defaults) {
@@ -15,7 +16,18 @@ module.exports = function (defaults) {
     },
     postcssOptions: {
       compile: {
-        plugins: [tailwindcss('./tailwind.config.js')],
+        plugins: [
+          tailwindcss('./tailwind.config.js'),
+          purgecss({
+            content: [
+              './app/templates/**/*.hbs',
+              './app/components/**/*.hbs',
+              './app/components/**/*.js',
+              './app/index.html',
+            ],
+            defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || []
+          })
+        ],
       },
       filter: {
         plugins: [autoprefixer],
