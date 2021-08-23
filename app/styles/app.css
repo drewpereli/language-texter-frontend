@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* purgecss start ignore */
 .flash-message {
   @apply px-8 py-4 border rounded text-white text-opacity-80;
 }
@@ -13,6 +14,11 @@
 .flash-message.alert-danger {
   @apply border-red-200 bg-red-500;
 }
+
+a {
+  @apply text-gray-200 hover:text-gray-400;
+}
+/* purgecss end ignore */
 
 .plotly svg {
   /* fix modeBar display */
