@@ -1,5 +1,22 @@
 {{page-title "Home"}}
 
 <div class="p-8 flex justify-center">
-  <ChallengeList class="w-full max-w-3xl" />
+
+  <div class="w-full max-w-3xl">
+    {{#each this.challengeLists as |list|}}  
+      <Ui::Collapsible 
+        @startCollapsed={{list.startCollapsed}}
+        class="mt-8 first:mt-0"
+        as |c|
+      >
+        <c.trigger class="w-full flex items-center justify-between p-4 rounded bg-gray-700 hover:bg-gray-600">
+          <h3 class="text-xl uppercase font-medium">{{list.status}}</h3>
+          <FaIcon @icon={{if c.isCollapsed "chevron-up" "chevron-down"}} class="ml-4" />
+        </c.trigger>
+        <c.content class="mt-4">
+          <ChallengeList class="w-full max-w-3xl" @status={{list.status}} />
+        </c.content>
+      </Ui::Collapsible>
+    {{/each}}
+  </div>
 </div>

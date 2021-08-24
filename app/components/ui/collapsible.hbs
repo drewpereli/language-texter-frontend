@@ -1,0 +1,7 @@
+<div ...attributes>
+  {{yield (hash trigger=(component "utils/yieldable-div" class="cursor-pointer" onClick=this.toggleCollapsed) isCollapsed=this.isCollapsed)}}
+
+  {{#unless this.isCollapsed}}
+    {{yield (hash content=(component "utils/yieldable-div"))}}
+  {{/unless}}
+</div>

@@ -1,11 +1,14 @@
-<div ...attributes>
-  <div>
-    <Ui::Button @onClick={{this.addNewChallenge}} @variant="primary" @label="Add New Challenge" @icon="plus-square" />
-  </div>
-
-  <div class="mt-8">
+<div {{did-insert this.fetchChallenges.perform}} ...attributes>
+  {{#if this.fetchChallenges.isRunning}}
+    <div class="flex items-center text-gray-400">
+      <Ui::LoadingIndicator />
+      <span class="ml-4">Loading...</span>
+    </div>
+  {{else}}
     {{#each this.challenges as |challenge|}}
       <Challenge @challenge={{challenge}} class="mt-8 first:mt-0" />
+    {{else}}
+      <div class="text-gray-400">There are no {{@status}} challenges ¯\_(ツ)_/¯</div>
     {{/each}}
-  </div>
+  {{/if}}
 </div>
