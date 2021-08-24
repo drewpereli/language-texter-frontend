@@ -7,6 +7,7 @@ module.exports = {
   variants: {
     extend: {
       backgroundColor: ['even', 'odd'],
+      margin: ['first'],
     },
   },
   plugins: [],
