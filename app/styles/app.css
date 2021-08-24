@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "./tailwind.css";
+@import "./components/ui/loading-indicator.css";
+
 
 /* purgecss start ignore */
 .flash-message {

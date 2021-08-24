@@ -1,6 +1,8 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const postcssImport = require('postcss-import');
+const postcssPresetEnv = require('postcss-preset-env');
 const tailwindcss = require('tailwindcss');
 const purgecss = require('@fullhuman/postcss-purgecss');
 const autoprefixer = require('autoprefixer');
@@ -16,7 +18,11 @@ module.exports = function (defaults) {
     },
     postcssOptions: {
       compile: {
+        enabled: true,
+        cacheInclude: [/.*\.css$/, /.*\.hbs$/, /tailwind\.config\.js$/],
         plugins: [
+          postcssImport(),
+          postcssPresetEnv({ stage: 0 }),
           tailwindcss('./tailwind.config.js'),
           purgecss({
             content: [

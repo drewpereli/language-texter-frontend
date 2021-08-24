@@ -1,0 +1,26 @@
+.ui_loading-indicator {
+  min-height: 2rem;
+  min-width: 2rem;
+
+  &::before {
+    @apply h-full w-full flex items-center justify-center;
+
+    content: '\2022';
+
+    animation-name: horizontal-bounce;
+    animation-duration: 0.4s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+}
+
+@keyframes horizontal-bounce {
+  from {
+    transform: translateX(50%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
