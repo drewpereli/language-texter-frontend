@@ -23,7 +23,7 @@
 
   {{outlet}}
 
-  <div class="absolute bottom-8 right-8">
+  <div class="fixed bottom-8 right-8">
     {{#each this.flashMessages.queue as |flash|}}
       <FlashMessage @flash={{flash}} />
     {{/each}}
