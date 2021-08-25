@@ -32,7 +32,15 @@ export default class ChallengeComponent extends Component {
   *saveChallenge() {
     try {
       yield this.args.challenge.save();
-      this.flashMessages.success('Challenge saved!');
+      let message = 'Challenge saved ';
+
+      if (this.args.challenge.status === 'queued') {
+        message += 'and added to the queue';
+      } else {
+        message += 'and added to active challenges';
+      }
+
+      this.flashMessages.success(message);
       this.isEditing = false;
     } catch (error) {
       this.flashMessages.danger('There was an error saving the challenge. Please try again later.');

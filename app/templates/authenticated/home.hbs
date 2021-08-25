@@ -1,12 +1,18 @@
 {{page-title "Home"}}
 
 <div class="p-8 flex justify-center">
-
   <div class="w-full max-w-3xl">
+
+    <Ui::Button @onClick={{this.createNewChallenge}} @variant="primary" @label="Add New Challenge" @icon="plus-square" />
+
+    {{#each this.newChallenges as |challenge|}}      
+      <Challenge @challenge={{challenge}} class="mt-8" />
+    {{/each}}
+
     {{#each this.challengeLists as |list|}}  
       <Ui::Collapsible 
         @startCollapsed={{list.startCollapsed}}
-        class="mt-8 first:mt-0"
+        class="mt-8"
         as |c|
       >
         <c.trigger class="w-full flex items-center justify-between p-4 rounded bg-gray-700 hover:bg-gray-600">
