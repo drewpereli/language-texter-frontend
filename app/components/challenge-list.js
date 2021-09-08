@@ -1,22 +1,15 @@
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
 import { enqueueTask } from 'ember-concurrency-decorators';
 
 export default class ChallengeListComponent extends Component {
-  @service store;
+  @service infinity;
 
-  get challenges() {
-    return this.store.peekAll('challenge').filterBy('status', this.args.status).sortBy('createdAt').reverse();
-  }
-
-  @action
-  addNewChallenge() {
-    this.store.createRecord('challenge');
-  }
+  @tracked challenges;
 
   @enqueueTask
-  *fetchChallenges() {
-    yield this.store.query('challenge', { status: this.args.status });
+  *fetchInitialChallenges() {
+    this.challenges = yield this.infinity.model('challenge', { status: this.args.status });
   }
 }
