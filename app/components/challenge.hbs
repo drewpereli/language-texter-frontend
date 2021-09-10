@@ -1,12 +1,33 @@
 <div class="flex flex-col p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
+  {{! #region spanish }}
   <div>
     {{#if this.isNewOrEditing}}
+      {{! #region spanish input and suggestion }}
       <Ui::Input
         @value={{@challenge.spanishText}}
         @label="spanish"
-        @onChangeValue={{fn (mut @challenge.spanishText)}}
+        @onInputValue={{fn this.onInputChallengeText "spanish"}}
       />
+
+      <div class="mt-4 text-sm flex items-center h-6 {{unless this.showSpanishSuggestion "invisible"}}">
+        <span class="text-gray-400">SUGGESTION:</span>
+
+        {{#if this.spanishTranslationSuggestionRunning}}
+          <Ui::LoadingIndicator class="w-8 ml-4" />
+        {{else}}
+          <span class="ml-1 italic">"{{this.spanishTranslationSuggestion}}"</span>
+          <Ui::Button 
+            @icon="arrow-up" 
+            @variant="success" 
+            @size="sm" 
+            @onClick={{fn (mut @challenge.spanishText) this.spanishTranslationSuggestion}}
+            class="ml-2" 
+          />
+        {{/if}}
+      </div>
+      {{! #endregion }}
     {{else}}
+      {{! #region spanish text and view-progress button }}
       <div class="flex items-center justify-between">
         <div>
           <span class="font-bold text-gray-400">Spanish:</span>
@@ -15,24 +36,50 @@
 
         <LinkTo @route="authenticated.challenge" class="text-gray-400 underline hover:text-gray-300" @model={{@challenge.id}}>View Progress</LinkTo>
       </div>
+      {{! #endregion }}
     {{/if}}
   </div>
+  {{! #endregion }}
 
+  {{! #region english }}
   <div class="mt-6">
     {{#if this.isNewOrEditing}}
+      {{! #region english input and suggestion }}
       <Ui::Input
         @value={{@challenge.englishText}}
         @label="english"
-        @onChangeValue={{fn (mut @challenge.englishText)}}
+        @onInputValue={{fn this.onInputChallengeText "english"}}
       />
+
+      <div class="mt-4 text-sm flex items-center h-6 {{unless this.showEnglishSuggestion "invisible"}}">
+        <span class="text-gray-400">SUGGESTION:</span>
+
+        {{#if this.englishTranslationSuggestionRunning}}
+          <Ui::LoadingIndicator class="w-8 ml-4" />
+        {{else}}
+          <span class="ml-1 italic">"{{this.englishTranslationSuggestion}}"</span>
+          <Ui::Button 
+            @icon="arrow-up" 
+            @variant="success" 
+            @size="sm" 
+            @onClick={{fn (mut @challenge.englishText) this.englishTranslationSuggestion}}
+            class="ml-2" 
+          />
+        {{/if}}
+      </div>
+      {{! #endregion }}
     {{else}}
+      {{! #region english text }}
       <div>
         <span class="font-bold text-gray-400">English:</span>
         <span class="ml-1">"{{@challenge.englishText}}"</span>
       </div>
+      {{! #endregion }}
     {{/if}}
   </div>
+  {{! #endregion }}
 
+  {{! #region required streak }}
   <div class="mt-6">
     {{#if this.isNewOrEditing}}
       <Ui::Input
@@ -53,7 +100,9 @@
       </div>
     {{/if}}
   </div>
+  {{! #endregion }}
 
+  {{! #region save/edit/delete buttons }}
   <div class="mt-8 flex items-center justify-end">
     {{#if this.isNewOrEditing}}
       <div class="self-end flex">
@@ -69,4 +118,5 @@
       <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) true}}  @variant="danger" @icon="trash" @label="Delete" @size="sm" class="ml-2" />
     {{/if}}
   </div>
+  {{! #endregion }}
 </div>

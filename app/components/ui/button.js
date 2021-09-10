@@ -1,6 +1,14 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 
+/**
+ * @param {string} [label]
+ * @param {string} [variant] -- "primary", "secondary", "success", "danger"
+ * @param {function} [onClick] -- on-click action
+ * @param {function} [task] -- on-click ember-concurrency task. Overrides "onClick" arg
+ * @param {string} [icon] -- a font-awesome icon
+ * @param {string} [size] -- "sm" or null
+ */
 export default class UiButtonComponent extends Component {
   @action
   onClick() {
@@ -16,6 +24,8 @@ export default class UiButtonComponent extends Component {
       return 'bg-blue-700 hover:bg-blue-600';
     } else if (this.args.variant === 'secondary') {
       return 'bg-gray-500 hover:bg-gray-400';
+    } else if (this.args.variant === 'success') {
+      return 'bg-green-500 hover:bg-green-400';
     } else if (this.args.variant === 'danger') {
       return 'bg-red-700 hover:bg-red-600';
     } else {

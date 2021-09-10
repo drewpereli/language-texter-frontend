@@ -22,6 +22,8 @@ jobs:
 
       - name: Build app
         run: npm run build
+        env:
+          GOOGLE_TRANSLATE_API_KEY: ${{ secrets.GOOGLE_TRANSLATE_API_KEY }}
 
       - name: Deploy main build
         uses: appleboy/scp-action@master

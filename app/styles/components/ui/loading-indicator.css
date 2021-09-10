@@ -1,5 +1,5 @@
 .ui_loading-indicator {
-  min-height: 2rem;
+  min-height: 1rem;
   min-width: 2rem;
 
   &::before {

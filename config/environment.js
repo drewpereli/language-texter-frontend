@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'spanish-texter',
@@ -55,6 +57,10 @@ module.exports = function (environment) {
 
   ENV['ember-simple-auth'] = {
     routeAfterAuthentication: 'authenticated.home',
+  };
+
+  ENV.CUSTOM = {
+    googleTranslateApiKey: process.env.GOOGLE_TRANSLATE_API_KEY,
   };
 
   return ENV;

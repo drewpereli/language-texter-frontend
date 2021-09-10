@@ -1,8 +1,10 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency-decorators';
+import { timeout } from 'ember-concurrency';
+import { task, restartableTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import GoogleTranslateClient from 'spanish-texter/utils/google-translate-client';
 
 /**
  * @param {ChallengeModel} challenge
@@ -10,8 +12,24 @@ import { action } from '@ember/object';
 export default class ChallengeComponent extends Component {
   @service flashMessages;
 
+  googleTranslateClient = new GoogleTranslateClient();
+
   @tracked isEditing = false;
   @tracked showDeleteConfirmation = false;
+
+  @tracked englishTranslationSuggestion;
+  @tracked spanishTranslationSuggestion;
+
+  @tracked englishTranslationSuggestionRunning;
+  @tracked spanishTranslationSuggestionRunning;
+
+  get showEnglishSuggestion() {
+    return this.englishTranslationSuggestion || this.englishTranslationSuggestionRunning;
+  }
+
+  get showSpanishSuggestion() {
+    return this.spanishTranslationSuggestion || this.spanishTranslationSuggestionRunning;
+  }
 
   get isNewOrEditing() {
     return this.args.challenge.isNew || this.isEditing;
@@ -70,6 +88,52 @@ export default class ChallengeComponent extends Component {
     } catch (error) {
       this.flashMessages.danger('There was an error deleting the challenge. Please try again later.');
       console.log(error);
+    }
+  }
+
+  @action
+  onInputChallengeText(language, text) {
+    if (language === 'english') {
+      this.args.challenge.englishText = text;
+    } else {
+      this.args.challenge.spanishText = text;
+    }
+
+    this.setTranslationSuggestion.perform({ text, from: language });
+  }
+
+  @restartableTask
+  *setTranslationSuggestion({ text, from }) {
+    let to = from === 'english' ? 'spanish' : 'english';
+
+    if (!text) {
+      if (to === 'english') {
+        this.englishTranslationSuggestion = null;
+        this.englishTranslationSuggestionRunning = false;
+      } else {
+        this.spanishTranslationSuggestion = null;
+        this.spanishTranslationSuggestionRunning = false;
+      }
+
+      return;
+    }
+
+    if (to === 'english') {
+      this.englishTranslationSuggestionRunning = true;
+    } else {
+      this.spanishTranslationSuggestionRunning = true;
+    }
+
+    yield timeout(500); // 500 ms debounce
+
+    let suggestion = yield this.googleTranslateClient.translate({ text, from, to });
+
+    if (to === 'english') {
+      this.englishTranslationSuggestion = suggestion;
+      this.englishTranslationSuggestionRunning = false;
+    } else {
+      this.spanishTranslationSuggestion = suggestion;
+      this.spanishTranslationSuggestionRunning = false;
     }
   }
 }
