@@ -13,6 +13,10 @@ export default class UiButtonComponent extends Component {
   @action
   onClick() {
     if (this.args.task) {
+      if (this.args.task.isRunning) {
+        return;
+      }
+
       this.args.task.perform();
     } else if (this.args.onClick) {
       this.args.onClick();
@@ -20,17 +24,30 @@ export default class UiButtonComponent extends Component {
   }
 
   get colorClasses() {
+    let bgClass, hoverBgClass;
     if (this.args.variant === 'primary') {
-      return 'bg-blue-700 hover:bg-blue-600';
+      bgClass = 'bg-blue-700';
+      hoverBgClass = 'hover:bg-blue-600';
     } else if (this.args.variant === 'secondary') {
-      return 'bg-gray-500 hover:bg-gray-400';
+      bgClass = 'bg-gray-500';
+      hoverBgClass = 'hover:bg-gray-400';
     } else if (this.args.variant === 'success') {
-      return 'bg-green-500 hover:bg-green-400';
+      bgClass = 'bg-green-500';
+      hoverBgClass = 'hover:bg-green-400';
     } else if (this.args.variant === 'danger') {
-      return 'bg-red-700 hover:bg-red-600';
+      bgClass = 'bg-red-700';
+      hoverBgClass = 'hover:bg-red-600';
     } else {
       return '';
     }
+
+    let classes = [bgClass];
+
+    if (!this.args.task?.isRunning) {
+      classes.push(hoverBgClass);
+    }
+
+    return classes.join(' ');
   }
 
   get sizeClasses() {
