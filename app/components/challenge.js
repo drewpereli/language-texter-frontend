@@ -99,41 +99,46 @@ export default class ChallengeComponent extends Component {
       this.args.challenge.spanishText = text;
     }
 
-    this.setTranslationSuggestion.perform({ text, from: language });
+    if (language === 'english') {
+      this.setSpanishSuggestion.perform(text);
+    } else {
+      this.setEnglishSuggestion.perform(text);
+    }
   }
 
   @restartableTask
-  *setTranslationSuggestion({ text, from }) {
-    let to = from === 'english' ? 'spanish' : 'english';
-
+  *setSpanishSuggestion(text) {
     if (!text) {
-      if (to === 'english') {
-        this.englishTranslationSuggestion = null;
-        this.englishTranslationSuggestionRunning = false;
-      } else {
-        this.spanishTranslationSuggestion = null;
-        this.spanishTranslationSuggestionRunning = false;
-      }
-
+      this.spanishTranslationSuggestion = null;
+      this.spanishTranslationSuggestionRunning = false;
       return;
     }
 
-    if (to === 'english') {
-      this.englishTranslationSuggestionRunning = true;
-    } else {
-      this.spanishTranslationSuggestionRunning = true;
-    }
+    this.spanishTranslationSuggestionRunning = true;
 
     yield timeout(500); // 500 ms debounce
 
-    let suggestion = yield this.googleTranslateClient.translate({ text, from, to });
+    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'spanish', to: 'english' });
 
-    if (to === 'english') {
-      this.englishTranslationSuggestion = suggestion;
+    this.spanishTranslationSuggestion = suggestion;
+    this.spanishTranslationSuggestionRunning = false;
+  }
+
+  @restartableTask
+  *setEnglishSuggestion(text) {
+    if (!text) {
+      this.englishTranslationSuggestion = null;
       this.englishTranslationSuggestionRunning = false;
-    } else {
-      this.spanishTranslationSuggestion = suggestion;
-      this.spanishTranslationSuggestionRunning = false;
+      return;
     }
+
+    this.englishTranslationSuggestionRunning = true;
+
+    yield timeout(500); // 500 ms debounce
+
+    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'english', to: 'spanish' });
+
+    this.englishTranslationSuggestion = suggestion;
+    this.englishTranslationSuggestionRunning = false;
   }
 }
