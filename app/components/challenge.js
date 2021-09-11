@@ -118,7 +118,7 @@ export default class ChallengeComponent extends Component {
 
     yield timeout(500); // 500 ms debounce
 
-    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'spanish', to: 'english' });
+    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'english', to: 'spanish' });
 
     this.spanishTranslationSuggestion = suggestion;
     this.spanishTranslationSuggestionRunning = false;
@@ -136,7 +136,7 @@ export default class ChallengeComponent extends Component {
 
     yield timeout(500); // 500 ms debounce
 
-    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'english', to: 'spanish' });
+    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'spanish', to: 'english' });
 
     this.englishTranslationSuggestion = suggestion;
     this.englishTranslationSuggestionRunning = false;
