@@ -13,4 +13,16 @@ export default class ChallengeModel extends Model {
   @belongsTo('user', { async: false }) user;
 
   @hasMany('attempts', { async: false }) attempts;
+
+  get isQueued() {
+    return this.status === 'queued';
+  }
+
+  get isActive() {
+    return this.status === 'active';
+  }
+
+  get isComplete() {
+    return this.status === 'complete';
+  }
 }

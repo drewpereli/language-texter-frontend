@@ -47,7 +47,9 @@
           {{/if}}
         </div>
 
-        <LinkTo @route="authenticated.challenge" class="text-gray-400 underline hover:text-gray-300" @model={{@challenge.id}}>View Progress</LinkTo>
+        {{#unless @challenge.isQueued}}
+          <LinkTo @route="authenticated.challenge" class="text-gray-400 underline hover:text-gray-300" @model={{@challenge.id}}>View Attempts</LinkTo>
+        {{/unless}}
       </div>
       {{! #endregion }}
     {{/if}}
@@ -114,7 +116,12 @@
         @onChangeValue={{fn (mut @challenge.requiredStreakForCompletion)}}
         @type="number"
       />
-    {{else}}
+    {{else if @challenge.isQueued}}
+      <div class="flex items-center text-gray-400">
+        <FaIcon @icon="clock" />
+        <span class="ml-2">Challenge queued</span>
+      </div>
+    {{else if @challenge.isActive}}
       <div>
         <div class="font-bold text-gray-400">Current Streak</div>
         <div class="relative w-full h-6 rounded-full overflow-hidden bg-gray-400 mt-3">
@@ -123,6 +130,11 @@
             {{@challenge.currentStreak}}/{{@challenge.requiredStreakForCompletion}}
           </div>
         </div>
+      </div>
+    {{else if @challenge.isComplete}}
+      <div class="flex items-center">
+        <FaIcon @icon="check" class="text-green-400" />
+        <span class="ml-2 text-gray-400">Challenge complete</span>
       </div>
     {{/if}}
   </div>
