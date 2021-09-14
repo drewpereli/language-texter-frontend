@@ -23,14 +23,6 @@ export default class ChallengeComponent extends Component {
   @tracked englishTranslationSuggestionRunning;
   @tracked spanishTranslationSuggestionRunning;
 
-  get showEnglishSuggestion() {
-    return this.englishTranslationSuggestion || this.englishTranslationSuggestionRunning;
-  }
-
-  get showSpanishSuggestion() {
-    return this.spanishTranslationSuggestion || this.spanishTranslationSuggestionRunning;
-  }
-
   get isNewOrEditing() {
     return this.args.challenge.isNew || this.isEditing;
   }
