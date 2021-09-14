@@ -9,7 +9,7 @@
         @onInputValue={{fn this.onInputChallengeText "spanish"}}
       />
 
-      <div class="mt-4 text-sm flex items-center h-6">
+      <div class="mt-2 text-sm flex items-center h-6">
         <span class="text-gray-400">SUGGESTION:</span>
 
         {{#if this.spanishTranslationSuggestionRunning}}
@@ -27,6 +27,13 @@
           <span class="ml-2 text-gray-400">--</span>
         {{/if}}
       </div>
+
+      <Ui::Input
+        @value={{@challenge.spanishTextNote}}
+        @label="spanish note (will be sent with spanish text)"
+        @onInputValue={{fn (mut @challenge.spanishTextNote)}}
+        class="mt-2"
+      />
       {{! #endregion }}
     {{else}}
       {{! #region spanish text and view-progress button }}
@@ -34,6 +41,10 @@
         <div>
           <span class="font-bold text-gray-400">Spanish:</span>
           <span class="ml-1">"{{@challenge.spanishText}}"</span>
+
+          {{#if @challenge.spanishTextNote}}
+            <span class="ml-1 text-gray-400">(Note: {{@challenge.spanishTextNote}})</span>
+          {{/if}}
         </div>
 
         <LinkTo @route="authenticated.challenge" class="text-gray-400 underline hover:text-gray-300" @model={{@challenge.id}}>View Progress</LinkTo>
@@ -53,7 +64,7 @@
         @onInputValue={{fn this.onInputChallengeText "english"}}
       />
 
-      <div class="mt-4 text-sm flex items-center h-6">
+      <div class="mt-2 text-sm flex items-center h-6">
         <span class="text-gray-400">SUGGESTION:</span>
 
         {{#if this.englishTranslationSuggestionRunning}}
@@ -71,12 +82,23 @@
           <span class="ml-2 text-gray-400">--</span>
         {{/if}}
       </div>
+
+      <Ui::Input
+        @value={{@challenge.englishTextNote}}
+        @label="english note (will be sent with english text)"
+        @onInputValue={{fn (mut @challenge.englishTextNote)}}
+        class="mt-2"
+      />
       {{! #endregion }}
     {{else}}
       {{! #region english text }}
       <div>
         <span class="font-bold text-gray-400">English:</span>
         <span class="ml-1">"{{@challenge.englishText}}"</span>
+
+        {{#if @challenge.englishTextNote}}
+          <span class="ml-1 text-gray-400">(Note: {{@challenge.englishTextNote}})</span>
+        {{/if}}
       </div>
       {{! #endregion }}
     {{/if}}
