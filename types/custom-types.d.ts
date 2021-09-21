@@ -3,6 +3,8 @@ export interface InfinityService {
 }
 
 export interface SessionService {
+  data: { authenticated: { token: string } };
+  isAuthenticated: boolean;
   requireAuthentication: (transition: RouteTransition, redirectRoute: string) => boolean;
   invalidate: () => void;
   prohibitAuthentication: (route: string) => void;
