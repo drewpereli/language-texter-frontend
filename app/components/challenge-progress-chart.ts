@@ -1,13 +1,27 @@
 import Component from '@glimmer/component';
 import moment from 'moment';
+import AttemptModel from 'spanish-texter/models/attempt';
+import ChallengeModel from 'spanish-texter/models/challenge';
 
-export default class ChallengeProgressChartComponent extends Component {
-  get sortedAttempts() {
+interface Args {
+  challenge: ChallengeModel;
+}
+
+interface AttemptWithStreakCount {
+  attempt: AttemptModel;
+  idx: number;
+  streakCount: number;
+}
+
+type CustomScatterData = Plotly.ScatterData | { customdata: Record<string, unknown>[] };
+
+export default class ChallengeProgressChartComponent extends Component<Args> {
+  get sortedAttempts(): AttemptModel[] {
     return this.args.challenge.attempts.sortBy('createdAt');
   }
 
-  get attemptsWithStreakCount() {
-    let attemptsWithStreakCount = [];
+  get attemptsWithStreakCount(): AttemptWithStreakCount[] {
+    let attemptsWithStreakCount: AttemptWithStreakCount[] = [];
 
     let currentStreakCount = 0;
 
@@ -28,8 +42,8 @@ export default class ChallengeProgressChartComponent extends Component {
     return attemptsWithStreakCount;
   }
 
-  get traces() {
-    let trace = {
+  get traces(): CustomScatterData[] {
+    let trace: CustomScatterData = {
       x: this.attemptsWithStreakCount.mapBy('attempt.createdAt'),
       y: this.attemptsWithStreakCount.mapBy('streakCount'),
       type: 'scatter',
@@ -64,12 +78,11 @@ export default class ChallengeProgressChartComponent extends Component {
     return [trace];
   }
 
-  get layout() {
+  get layout(): Partial<Plotly.Layout> {
     let textColor = '#888';
     let bgColor = '#222';
 
     return {
-      title: false,
       xaxis: {
         title: 'Attempt Date',
         color: textColor,
@@ -82,6 +95,13 @@ export default class ChallengeProgressChartComponent extends Component {
       },
       paper_bgcolor: bgColor,
       plot_bgcolor: bgColor,
+      margin: {
+        l: 80,
+        r: 50,
+        b: 80,
+        t: 50,
+        pad: 0,
+      },
     };
   }
 }
