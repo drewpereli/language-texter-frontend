@@ -1,5 +1,16 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { Task } from 'ember-concurrency';
+import { IconName } from '@fortawesome/fontawesome-common-types';
+
+interface Args {
+  label?: string;
+  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  onClick?: () => unknown;
+  task?: Task<unknown, []>;
+  icon?: IconName;
+  size?: 'sm';
+}
 
 /**
  * @param {string} [label]
@@ -9,9 +20,9 @@ import { action } from '@ember/object';
  * @param {string} [icon] -- a font-awesome icon
  * @param {string} [size] -- "sm" or null
  */
-export default class UiButtonComponent extends Component {
+export default class UiButtonComponent extends Component<Args> {
   @action
-  onClick() {
+  onClick(): void {
     if (this.args.task) {
       if (this.args.task.isRunning) {
         return;
@@ -23,7 +34,7 @@ export default class UiButtonComponent extends Component {
     }
   }
 
-  get colorClasses() {
+  get colorClasses(): string {
     let bgClass, hoverBgClass;
     if (this.args.variant === 'primary') {
       bgClass = 'bg-blue-700';
@@ -50,7 +61,7 @@ export default class UiButtonComponent extends Component {
     return classes.join(' ');
   }
 
-  get sizeClasses() {
+  get sizeClasses(): string {
     if (this.args.size === 'sm') {
       return 'px-2 py-1 text-xs';
     } else {
