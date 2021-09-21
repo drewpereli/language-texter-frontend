@@ -15,6 +15,7 @@ module.exports = function (defaults) {
           global: true,
         },
       },
+      exclude: ['@fortawesome/fontawesome-common-types'],
     },
     postcssOptions: {
       compile: {
