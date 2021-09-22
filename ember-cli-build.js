@@ -30,6 +30,7 @@ module.exports = function (defaults) {
               './app/templates/**/*.hbs',
               './app/components/**/*.hbs',
               './app/components/**/*.js',
+              './app/components/**/*.ts',
               './app/index.html',
             ],
             defaultExtractor: (content) => content.match(/[A-Za-z0-9-_:/]+/g) || [],
