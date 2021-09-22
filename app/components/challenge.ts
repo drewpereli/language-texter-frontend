@@ -1,33 +1,42 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { timeout } from 'ember-concurrency';
-import { task, restartableTask } from 'ember-concurrency-decorators';
+import { dropTask, restartableTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import GoogleTranslateClient from 'spanish-texter/utils/google-translate-client';
+import ChallengeModel from 'spanish-texter/models/challenge';
+import FlashMessageService from 'ember-cli-flash/services/flash-messages';
+import { TaskGenerator } from 'ember-concurrency';
+import { Language } from 'custom-types';
+import { taskFor } from 'ember-concurrency-ts';
+
+interface Args {
+  challenge: ChallengeModel;
+}
 
 /**
  * @param {ChallengeModel} challenge
  */
-export default class ChallengeComponent extends Component {
-  @service flashMessages;
+export default class ChallengeComponent extends Component<Args> {
+  @service declare flashMessages: FlashMessageService;
 
-  googleTranslateClient = new GoogleTranslateClient();
+  googleTranslateClient: GoogleTranslateClient = new GoogleTranslateClient();
 
   @tracked isEditing = false;
   @tracked showDeleteConfirmation = false;
 
-  @tracked englishTranslationSuggestion;
-  @tracked spanishTranslationSuggestion;
+  @tracked englishTranslationSuggestion: string | undefined;
+  @tracked spanishTranslationSuggestion: string | undefined;
 
-  @tracked englishTranslationSuggestionRunning;
-  @tracked spanishTranslationSuggestionRunning;
+  @tracked englishTranslationSuggestionRunning = false;
+  @tracked spanishTranslationSuggestionRunning = false;
 
-  get isNewOrEditing() {
-    return this.args.challenge.isNew || this.isEditing;
+  get isNewOrEditing(): boolean {
+    return !!this.args.challenge.isNew || this.isEditing;
   }
 
-  get streakBarInnerStyle() {
+  get streakBarInnerStyle(): string {
     let completionFraction = Math.min(
       this.args.challenge.currentStreak / this.args.challenge.requiredStreakForCompletion,
       1
@@ -38,8 +47,8 @@ export default class ChallengeComponent extends Component {
     return `width: ${completionPercentage}%`;
   }
 
-  @task
-  *saveChallenge() {
+  @dropTask
+  *saveChallenge(): TaskGenerator<void> {
     try {
       yield this.args.challenge.save();
       let message = 'Challenge saved ';
@@ -59,9 +68,11 @@ export default class ChallengeComponent extends Component {
   }
 
   @action
-  cancel() {
+  cancel(): void {
     let challenge = this.args.challenge;
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     if (challenge.isNew) {
       challenge.deleteRecord();
     } else {
@@ -71,8 +82,8 @@ export default class ChallengeComponent extends Component {
     this.isEditing = false;
   }
 
-  @task
-  *destroyChallenge() {
+  @dropTask
+  *destroyChallenge(): TaskGenerator<void> {
     try {
       yield this.args.challenge.destroyRecord();
       this.flashMessages.success('Challenge deleted');
@@ -84,7 +95,7 @@ export default class ChallengeComponent extends Component {
   }
 
   @action
-  onInputChallengeText(language, text) {
+  onInputChallengeText(language: Language, text: string): void {
     if (language === 'english') {
       this.args.challenge.englishText = text;
     } else {
@@ -92,16 +103,16 @@ export default class ChallengeComponent extends Component {
     }
 
     if (language === 'english') {
-      this.setSpanishSuggestion.perform(text);
+      taskFor(this.setSpanishSuggestion).perform(text);
     } else {
-      this.setEnglishSuggestion.perform(text);
+      taskFor(this.setEnglishSuggestion).perform(text);
     }
   }
 
   @restartableTask
-  *setSpanishSuggestion(text) {
+  *setSpanishSuggestion(text: string): TaskGenerator<void> {
     if (!text) {
-      this.spanishTranslationSuggestion = null;
+      this.spanishTranslationSuggestion = undefined;
       this.spanishTranslationSuggestionRunning = false;
       return;
     }
@@ -117,9 +128,9 @@ export default class ChallengeComponent extends Component {
   }
 
   @restartableTask
-  *setEnglishSuggestion(text) {
+  *setEnglishSuggestion(text: string): TaskGenerator<void> {
     if (!text) {
-      this.englishTranslationSuggestion = null;
+      this.englishTranslationSuggestion = undefined;
       this.englishTranslationSuggestionRunning = false;
       return;
     }

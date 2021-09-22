@@ -12,3 +12,5 @@ export interface SessionService {
 
 import type RouterService from '@ember/routing/router-service';
 export type RouteTransition = ReturnType<RouterService['transitionTo']> & { targetName: string };
+
+type Language = 'spanish' | 'english';

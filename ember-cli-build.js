@@ -15,7 +15,11 @@ module.exports = function (defaults) {
           global: true,
         },
       },
-      exclude: ['@fortawesome/fontawesome-common-types'],
+      exclude: [
+        '@fortawesome/fontawesome-common-types',
+        'ember-cli-flash/services/flash-messages',
+        'ember-concurrency-ts',
+      ],
     },
     postcssOptions: {
       compile: {

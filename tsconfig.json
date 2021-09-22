@@ -23,6 +23,7 @@
     "paths": {
       "spanish-texter/tests/*": ["tests/*"],
       "spanish-texter/*": ["app/*"],
+      "ember-cli-flash/*": ["node_modules/ember-cli-flash"],
       "*": ["types/*"]
     }
   },
