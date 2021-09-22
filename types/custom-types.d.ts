@@ -6,6 +6,7 @@ export interface SessionService {
   data: { authenticated: { token: string } };
   isAuthenticated: boolean;
   requireAuthentication: (transition: RouteTransition, redirectRoute: string) => boolean;
+  authenticate: (authenticator: string, info: { username?: string; password?: string }) => void;
   invalidate: () => void;
   prohibitAuthentication: (route: string) => void;
 }
