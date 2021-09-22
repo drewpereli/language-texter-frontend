@@ -3,7 +3,7 @@
     {{#each this.challenges as |challenge|}}
       <Challenge @challenge={{challenge}} class="mt-8 first:mt-0" />
     {{else}}
-      <div class="text-gray-400">There are no {{@status}} challenges ¯\_(ツ)_/¯</div>
+      <div class="text-gray-400">There are no {{@status}} challenges ¯&bsol;_(ツ)_/¯</div>
     {{/each}}
 
     <InfinityLoader @infinityModel={{this.challenges}}>
