@@ -21,6 +21,16 @@ module.exports = {
     'prefer-template': 2,
   },
   overrides: [
+    // ts files
+    {
+      files: '**/*.ts',
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
+      extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+      rules: {
+        'prefer-const': 'off',
+      },
+    },
     // node files
     {
       files: [

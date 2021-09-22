@@ -1,13 +1,14 @@
 import ActiveModelAdapter from 'active-model-adapter';
 import ENV from 'spanish-texter/config/environment';
 import { inject as service } from '@ember/service';
+import { SessionService } from 'custom-types';
 
 export default class ApplicationAdapter extends ActiveModelAdapter {
-  @service session;
+  @service declare session: SessionService;
 
   host = ENV.APP.apiHost;
 
-  get headers() {
+  get headers(): { Authorization: string } | Record<string, never> {
     if (this.session.isAuthenticated) {
       return {
         Authorization: `Bearer ${this.session.data.authenticated.token}`,
@@ -17,7 +18,15 @@ export default class ApplicationAdapter extends ActiveModelAdapter {
     }
   }
 
-  changePassword({ oldPassword, newPassword, newPasswordConfirmation }) {
+  changePassword({
+    oldPassword,
+    newPassword,
+    newPasswordConfirmation,
+  }: {
+    oldPassword: string;
+    newPassword: string;
+    newPasswordConfirmation: string;
+  }): Promise<unknown> {
     let data = {
       old_password: oldPassword,
       new_password: newPassword,

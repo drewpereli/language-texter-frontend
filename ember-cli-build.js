@@ -15,6 +15,11 @@ module.exports = function (defaults) {
           global: true,
         },
       },
+      exclude: [
+        '@fortawesome/fontawesome-common-types',
+        'ember-cli-flash/services/flash-messages',
+        'ember-concurrency-ts',
+      ],
     },
     postcssOptions: {
       compile: {
@@ -29,6 +34,7 @@ module.exports = function (defaults) {
               './app/templates/**/*.hbs',
               './app/components/**/*.hbs',
               './app/components/**/*.js',
+              './app/components/**/*.ts',
               './app/index.html',
             ],
             defaultExtractor: (content) => content.match(/[A-Za-z0-9-_:/]+/g) || [],

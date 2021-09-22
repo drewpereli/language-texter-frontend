@@ -1,9 +1,12 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import StoreService from '@ember-data/store';
+import EmberArray from '@ember/array';
+import ChallengeModel from 'spanish-texter/models/challenge';
 
 export default class AuthenticatedHomeController extends Controller {
-  @service store;
+  @service declare store: StoreService;
 
   challengeLists = [
     { status: 'queued', startCollapsed: true },
@@ -11,12 +14,12 @@ export default class AuthenticatedHomeController extends Controller {
     { status: 'complete', startCollapsed: true },
   ];
 
-  get newChallenges() {
+  get newChallenges(): EmberArray<ChallengeModel> {
     return this.store.peekAll('challenge').filterBy('isNew');
   }
 
   @action
-  createNewChallenge() {
+  createNewChallenge(): void {
     this.store.createRecord('challenge');
   }
 }
