@@ -1,6 +1,6 @@
 .ui_loading-indicator {
   min-height: 1px;
-  min-width: .5rem;
+  min-width: 0.5rem;
 
   &::before {
     @apply h-full w-full flex items-center justify-center;

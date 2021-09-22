@@ -44,4 +44,3 @@ jobs:
           key: ${{ secrets.KEY }}
           source: .htaccess
           target: ${{ secrets.REMOTE_DIR }}
-      
