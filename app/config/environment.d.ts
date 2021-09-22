@@ -13,4 +13,7 @@ declare const config: {
   APP: Record<string, unknown> & {
     apiHost: string;
   };
+  CUSTOM: {
+    googleTranslateApiKey: string;
+  };
 };
