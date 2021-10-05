@@ -1,0 +1,9 @@
+<div class="p-8 flex justify-center">
+  <div class="flex flex-col w-full max-w-xl">
+    <Ui::Input @value={{this.username}} @onInputValue={{fn (mut this.username)}} @label="username" />
+    <Ui::Input @value={{this.phoneNumber}} @onInputValue={{fn (mut this.phoneNumber)}} @label="phone number" class="mt-4" />
+    <Ui::Input @value={{this.password}} @onInputValue={{fn (mut this.password)}} @type="password" @label="password" class="mt-4" />
+    <Ui::Input @value={{this.passwordConfirmation}} @onInputValue={{fn (mut this.passwordConfirmation)}} @type="password" @label="password confirmation" class="mt-4" />
+    <Ui::Button @label="Sign Up" @task={{this.onSubmit}} @variant="primary" class="mt-8" />
+  </div>
+</div>

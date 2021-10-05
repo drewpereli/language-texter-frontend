@@ -10,6 +10,10 @@
       <LinkTo @route="authenticated.change-password" class="ml-8 hover:underline">
         Change Password
       </LinkTo>
+    {{else}}
+      <LinkTo @route="sign-up" class="ml-8 hover:underline">
+        Sign Up
+      </LinkTo>
     {{/if}}
 
     <LinkTo @route={{if this.session.isAuthenticated "authenticated.logout" "login"}} class="ml-8 first:ml-0 hover:underline">
