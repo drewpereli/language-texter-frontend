@@ -8,6 +8,7 @@ import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import fetch from 'fetch';
 import ENV from 'spanish-texter/config/environment';
 import { capitalize } from '@ember/string';
+import { passwordValidationInfo } from 'spanish-texter/utils/password-utils';
 
 export default class SignUp extends Controller {
   @tracked protected username: string | undefined;
@@ -15,10 +16,35 @@ export default class SignUp extends Controller {
   @tracked protected password: string | undefined;
   @tracked protected passwordConfirmation: string | undefined;
 
+  protected get passwordError(): string | null {
+    if (!this.password) {
+      return null;
+    }
+
+    return this.passwordValidationInfo.errors[0] || this.passwordValidationInfo.warnings[0] || null;
+  }
+
+  private get passwordValidationInfo(): ReturnType<typeof passwordValidationInfo> {
+    return passwordValidationInfo(this.password);
+  }
+
+  protected get passwordConfirmationError(): string | null {
+    if (this.password && this.passwordConfirmation && this.password !== this.passwordConfirmation) {
+      return "Password confirmation doesn't match password.";
+    }
+
+    return null;
+  }
+
   @dropTask
   protected *onSubmit(): TaskGenerator<void> {
     try {
       let { username, phoneNumber, password, passwordConfirmation } = this;
+
+      if (!this.passwordValidationInfo.valid) {
+        this.flashMessages.danger(this.passwordValidationInfo.errors[0]);
+        return;
+      }
 
       if (password !== passwordConfirmation) {
         this.flashMessages.danger("Password doesn't match confirmation");
