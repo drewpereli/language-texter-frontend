@@ -1,0 +1,16 @@
+username: username
+password: password
+password_confirmation: password confirmation
+phone_number: phone number
+
+button_labels:
+  sign_up: Sign Up
+
+error_messages:
+  generic: There was an error. Please try again later.
+  password_length: Password must be at least 12 characters long.
+  password_mismatch: Password doesn't match confirmation.
+  password_contains_password: Password should not contain the word "password".
+
+success_message:
+  sign_up_success: Sign up successful. You'll receive a text within the next few minutes with a link to confirm your account.

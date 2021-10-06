@@ -9,6 +9,7 @@ import fetch from 'fetch';
 import ENV from 'spanish-texter/config/environment';
 import { capitalize } from '@ember/string';
 import { passwordValidationInfo } from 'spanish-texter/utils/password-utils';
+import IntlService from 'ember-intl/services/intl';
 
 export default class SignUp extends Controller {
   @tracked protected username: string | undefined;
@@ -25,12 +26,12 @@ export default class SignUp extends Controller {
   }
 
   private get passwordValidationInfo(): ReturnType<typeof passwordValidationInfo> {
-    return passwordValidationInfo(this.password);
+    return passwordValidationInfo(this.password, this.intl.t.bind(this.intl));
   }
 
   protected get passwordConfirmationError(): string | null {
     if (this.password && this.passwordConfirmation && this.password !== this.passwordConfirmation) {
-      return "Password confirmation doesn't match password.";
+      return this.intl.t('error_messages.password_mismatch');
     }
 
     return null;
@@ -47,7 +48,7 @@ export default class SignUp extends Controller {
       }
 
       if (password !== passwordConfirmation) {
-        this.flashMessages.danger("Password doesn't match confirmation");
+        this.flashMessages.danger(this.intl.t('error_messages.password_mismatch'));
         return;
       }
 
@@ -64,9 +65,7 @@ export default class SignUp extends Controller {
       });
 
       if (response.ok) {
-        this.flashMessages.success(
-          "Sign up successful. You'll receive a text within the next few minutes with a link to confirm your account."
-        );
+        this.flashMessages.success(this.intl.t('success_message.sign_up_success'));
       } else if (response.status === 401) {
         let body = yield response.json();
 
@@ -88,10 +87,10 @@ export default class SignUp extends Controller {
 
         this.flashMessages.danger(errorMessage);
       } else {
-        this.flashMessages.danger('There was an error. Please try again later.');
+        this.flashMessages.danger(this.intl.t('error_messages.generic'));
       }
     } catch (error) {
-      this.flashMessages.danger('There was an error. Please try again later.');
+      this.flashMessages.danger(this.intl.t('error_messages.generic'));
     }
 
     this.password = undefined;
@@ -100,4 +99,5 @@ export default class SignUp extends Controller {
 
   @service private declare session: SessionService;
   @service private declare flashMessages: FlashMessageService;
+  @service private declare intl: IntlService;
 }
