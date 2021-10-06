@@ -22,7 +22,7 @@ export default class LoginController extends Controller {
       yield this.session.authenticate('authenticator:jwt', { username, password });
     } catch (error) {
       if (error.status === 401) {
-        this.flashMessages.danger('Invalid username or password');
+        this.flashMessages.danger(error.json.errors);
       } else {
         this.flashMessages.danger('There was an error. Please try again later.');
       }
