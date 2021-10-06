@@ -67,6 +67,7 @@
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "dotenv": "^10.0.0",
+    "els-intl-addon": "^1.0.5",
     "ember-auto-import": "^1.11.3",
     "ember-cli": "~3.27.0",
     "ember-cli-app-version": "^5.0.0",
