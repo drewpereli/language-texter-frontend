@@ -1,0 +1,15 @@
+username: Nom d'utilisateur
+password: le mot de passe
+password_confirmation: Confirmation mot de passe
+phone_number: numéro de téléphone
+button_labels:
+  sign_up: S'inscrire
+error_messages:
+  generic: Il y avait une erreur. Veuillez réessayer plus tard.
+  password_length: Le mot de passe doit comporter au moins 12 caractères.
+  password_mismatch: Le mot de passe ne correspond pas à la confirmation.
+  password_contains_password: Le mot de passe ne doit pas contenir le mot "mot de passe".
+success_message:
+  sign_up_success: >-
+    Inscription réussie. Vous recevrez un SMS dans les prochaines minutes avec
+    un lien pour confirmer votre compte.

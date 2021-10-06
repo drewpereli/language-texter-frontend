@@ -1,0 +1,15 @@
+username: اسم االمستخدم
+password: كلمه السر
+password_confirmation: تأكيد كلمة المرور
+phone_number: رقم الهاتف
+button_labels:
+  sign_up: اشتراك
+error_messages:
+  generic: كان هناك خطأ. الرجاء معاودة المحاولة في وقت لاحق.
+  password_length: يجب أن تتكون كلمة المرور من 12 حرفًا على الأقل.
+  password_mismatch: كلمة المرور غير مطابقة للتأكيد.
+  password_contains_password: يجب ألا تحتوي كلمة المرور على كلمة "password".
+success_message:
+  sign_up_success: >-
+    الاشتراك بنجاح. ستتلقى رسالة نصية في غضون الدقائق القليلة القادمة مع رابط
+    لتأكيد حسابك.

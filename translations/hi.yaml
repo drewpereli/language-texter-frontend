@@ -1,0 +1,15 @@
+username: उपयोगकर्ता नाम
+password: पासवर्ड
+password_confirmation: पासवर्ड पुष्टि
+phone_number: फ़ोन नंबर
+button_labels:
+  sign_up: साइन अप करें
+error_messages:
+  generic: 'एक त्रुटि हुई। बाद में पुन: प्रयास करें।'
+  password_length: पासवर्ड कम से कम 12 अक्षर लंबा होना चाहिए।
+  password_mismatch: पासवर्ड पुष्टि से मेल नहीं खाता।
+  password_contains_password: पासवर्ड में "पासवर्ड" शब्द नहीं होना चाहिए।
+success_message:
+  sign_up_success: >-
+    सफल पंजीकरण। आपको अगले कुछ मिनटों में अपने खाते की पुष्टि करने के लिए एक
+    लिंक के साथ एक टेक्स्ट प्राप्त होगा।

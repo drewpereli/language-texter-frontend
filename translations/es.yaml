@@ -1,0 +1,15 @@
+username: nombre de usuario
+password: contraseña
+password_confirmation: confirmación de contraseña
+phone_number: número de teléfono
+button_labels:
+  sign_up: Inscribirse
+error_messages:
+  generic: Hubo un error. Por favor, inténtelo de nuevo más tarde.
+  password_length: La contraseña debe tener al menos 12 caracteres.
+  password_mismatch: La contraseña no coincide con la confirmación.
+  password_contains_password: La contraseña no debe contener la palabra "contraseña".
+success_message:
+  sign_up_success: >-
+    Regístrese exitosamente. Recibirá un mensaje de texto en los próximos
+    minutos con un enlace para confirmar su cuenta.
