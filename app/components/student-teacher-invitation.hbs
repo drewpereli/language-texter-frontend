@@ -1,6 +1,5 @@
 <div class="p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
 
-
   {{#if this.invitation.isNew}}
     <div class="flex flex-col">
       <Ui::Input
@@ -71,7 +70,7 @@
         {{#if this.invitation.wasSentByCurrentUser}}
           You invited <span class="text-gray-50 font-medium">{{this.invitation.recipientName}}</span> to be your {{this.invitation.requestedRole}}.
         {{else}}
-          <span class="text-gray-50 font-medium">{{this.invitation.creatorUsername}}</span> is inviting you to be their {{this.invitation.requestedRole}}!
+          <span class="text-gray-50 font-medium">{{this.invitation.creatorUsername}}</span> {{if this.invitation.isComplete "invited" "is inviting"}} you to be their {{this.invitation.requestedRole}}{{if this.invitation.isComplete "." "!"}}
         {{/if}}
       </div>
 
