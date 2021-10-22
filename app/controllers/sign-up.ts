@@ -8,7 +8,7 @@ import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import fetch from 'fetch';
 import ENV from 'spanish-texter/config/environment';
 import { capitalize } from '@ember/string';
-import { passwordValidationInfo } from 'spanish-texter/utils/password-utils';
+import { getPasswordValidationInfo } from 'spanish-texter/utils/validation-utils';
 
 export default class SignUp extends Controller {
   @tracked protected username: string | undefined;
@@ -24,8 +24,8 @@ export default class SignUp extends Controller {
     return this.passwordValidationInfo.errors[0] || this.passwordValidationInfo.warnings[0] || null;
   }
 
-  private get passwordValidationInfo(): ReturnType<typeof passwordValidationInfo> {
-    return passwordValidationInfo(this.password);
+  private get passwordValidationInfo(): ReturnType<typeof getPasswordValidationInfo> {
+    return getPasswordValidationInfo(this.password);
   }
 
   protected get passwordConfirmationError(): string | null {

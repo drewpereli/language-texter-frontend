@@ -15,3 +15,14 @@ import type RouterService from '@ember/routing/router-service';
 export type RouteTransition = ReturnType<RouterService['transitionTo']> & { targetName: string };
 
 type Language = 'spanish' | 'english';
+
+interface AdapterErrorEntry {
+  detail: string;
+  source: { pointer: string };
+  title: string;
+}
+
+interface AdapterError extends Error {
+  errors: AdapterErrorEntry[];
+  isAdapterError: true;
+}
