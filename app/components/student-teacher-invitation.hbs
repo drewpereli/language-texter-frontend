@@ -1,0 +1,88 @@
+<div class="p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
+
+
+  {{#if this.invitation.isNew}}
+    <div class="flex flex-col">
+      <Ui::Input
+        @value={{this.invitation.recipientName}}
+        @label="recipient name"
+        @onInputValue={{fn (mut this.invitation.recipientName)}}
+        @error={{this.recipientNameError}}
+      />
+      
+      <Ui::Input
+        @value={{this.invitation.recipientPhoneNumber}}
+        @label="recipient phone number"
+        @type="tel"
+        @onInputValue={{fn (mut this.invitation.recipientPhoneNumber)}}
+        @error={{this.recipientPhoneNumberError}}
+        class="mt-6"
+      />
+
+
+      <div class="mt-6">
+        <span class="text-xs">requested role</span>
+        <span class="mt-1 rounded h-8 flex items-center bg-gray-700 py-2 px-1">
+          <Ui::Button 
+            @icon="school" 
+            @label="teacher" 
+            @onClick={{fn (mut this.invitation.requestedRole) "teacher"}}
+            class="flex-1 flex justify-center {{if this.invitation.isRequestingTeacherRole "text-green-300" "text-gray-400 hover:text-gray-200"}}" 
+          />
+
+          <span class="h-full w-px bg-gray-400" />
+          
+          <Ui::Button 
+            @icon="graduation-cap" 
+            @label="student" 
+            @onClick={{fn (mut this.invitation.requestedRole) "student"}}
+            class="flex-1 flex justify-center {{if this.invitation.isRequestingTeacherRole "text-gray-400 hover:text-gray-200" "text-green-300"}}" 
+          />
+        </span>
+      </div>
+
+      <div class="mt-8 flex justify-end">
+        <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" />
+        <Ui::Button @icon="paper-plane" @variant="primary" @label="Send" @task={{this.save}} class="ml-4 px-8" />
+      </div>
+    </div>
+  {{else}}
+    <div class="flex flex-col">
+      <div class="flex items-center justify-between">
+        <div class="text-gray-400">
+          <FaIcon @icon={{if this.invitation.wasSentByCurrentUser "paper-plane" "inbox"}} />
+          <span class="ml-2">{{if this.invitation.wasSentByCurrentUser "Sent by you" "Sent to you"}} {{this.sentTimeAgo}}</span>
+        </div>
+
+        {{#if this.invitation.isComplete}}  
+          <div class="flex items-center ml-4">
+            {{#if this.invitation.wasAccepted}}
+              <span class="text-gray-400">Accepted</span>
+              <FaIcon @icon="check" class="ml-2 text-green-500" />
+            {{else}}
+              <span class="text-gray-400">Rejected</span>
+              <FaIcon @icon="check" class="ml-2" />
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+
+      <div class="mt-6 text-gray-200">
+        {{#if this.invitation.wasSentByCurrentUser}}
+          You invited <span class="text-gray-50 font-medium">{{this.invitation.recipientName}}</span> to be your {{this.invitation.requestedRole}}.
+        {{else}}
+          <span class="text-gray-50 font-medium">{{this.invitation.creatorUsername}}</span> is inviting you to be their {{this.invitation.requestedRole}}!
+        {{/if}}
+      </div>
+
+      {{#if this.needsResponse}}  
+        <div class="mt-8 flex items-center justify-end">
+          <Ui::Button @task={{this.reject}} @variant="danger" @label="Decline Invitation" @icon="window-close" />
+          <Ui::Button @task={{this.accept}} @variant="success" @label="Accept Invitation" @icon="check-square" class="ml-4" />
+        </div>
+      {{/if}}
+
+    </div>
+  {{/if}}
+
+</div>

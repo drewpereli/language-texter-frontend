@@ -11,7 +11,7 @@
     {{/if}}
     
     {{#if @label}}
-      <span class="ml-1 first:ml-0">{{@label}}</span>
+      <span class="first:ml-0 {{if (eq @size "sm") "ml-1" "ml-2"}}">{{@label}}</span>
     {{/if}}
   </span>
 
