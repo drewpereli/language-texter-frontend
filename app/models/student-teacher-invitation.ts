@@ -58,9 +58,9 @@ export default class StudentTeacherInvitationModel extends Model {
     // @ts-ignore
     if (this.isNew) {
       return InvitationUserType.New;
-    } else if (this.creator?.id === String(this.session.data.authenticated.user.id)) {
+    } else if (this.creator?.isCurrentUser) {
       return InvitationUserType.SentByCurrentUser;
-    } else if (this.recipient?.id === String(this.session.data.authenticated.user.id)) {
+    } else if (this.recipient?.isCurrentUser) {
       return InvitationUserType.ReceivedByCurrentUser;
     }
 
