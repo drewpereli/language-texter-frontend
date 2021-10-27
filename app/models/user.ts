@@ -7,7 +7,11 @@ import CurrentUserService from 'spanish-texter/services/current-user';
 export default class UserModel extends Model {
   @attr('string') declare username: string;
 
-  @hasMany('challenge', { async: false }) declare challenges: EmberArray<ChallengeModel>;
+  @hasMany('user', { async: false, inverse: 'teachers' }) declare students: EmberArray<UserModel>;
+  @hasMany('user', { async: false, inverse: 'students' }) declare teachers: EmberArray<UserModel>;
+
+  @hasMany('challenge', { async: false, inverse: 'student' }) declare challengesAssigned: EmberArray<ChallengeModel>;
+  @hasMany('challenge', { async: false, inverse: 'creator' }) declare challengesCreated: EmberArray<ChallengeModel>;
 
   @service private declare currentUser: CurrentUserService;
 

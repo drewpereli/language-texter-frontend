@@ -140,21 +140,40 @@
   </div>
   {{! #endregion }}
 
-  {{! #region save/edit/delete buttons }}
-  <div class="mt-8 flex items-center justify-end">
-    {{#if this.isNewOrEditing}}
-      <div class="self-end flex">
-        <Ui::Button @task={{this.saveChallenge}} @variant="primary" @label="Save" @icon="save" @size="sm" />
-        <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" @size="sm" class="ml-2" />
-      </div>
-    {{else if this.showDeleteConfirmation}}
-      Delete this challenge?
-      <Ui::Button @task={{this.destroyChallenge}}  @variant="danger" @label="Yes, delete" @icon="trash" @size="sm" class="ml-2" />
-      <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) false}}  @variant="secondary" @label="Cancel" @icon="window-close" @size="sm"  class="ml-2" />
-    {{else}}
-      <Ui::Button @onClick={{fn (mut this.isEditing) true}}  @variant="secondary" @label="Edit" @icon="edit" @size="sm" />
-      <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) true}}  @variant="danger" @icon="trash" @label="Delete" @size="sm" class="ml-2" />
-    {{/if}}
+  {{! #region student assignment }}
+  {{#if (and this.isNewOrEditing this.studentOptions.length)}}  
+    <div class="mt-6">
+      <Ui::Select
+        @options={{this.studentOptions}}
+        @selectedOptionId={{@challenge.student.id}}
+        @label="assign to"
+        @onChangeValue={{fn (mut @challenge.student)}}
+      />
+    </div>
+  {{/if}}
+  {{! #endregion }}
+
+  {{! #region ui buttons and created-by }}
+  <div class="mt-8 flex items-center justify-between">
+    <div class="text-sm text-gray-500">{{this.studentCreatorText}}</div>
+    
+    {{! #region save/edit/delete buttons }}
+    <div class="flex items-center">
+      {{#if this.isNewOrEditing}}
+        <div class="self-end flex">
+          <Ui::Button @task={{this.saveChallenge}} @variant="primary" @label="Save" @icon="save" @size="sm" />
+          <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" @size="sm" class="ml-2" />
+        </div>
+      {{else if this.showDeleteConfirmation}}
+        Delete this challenge?
+        <Ui::Button @task={{this.destroyChallenge}}  @variant="danger" @label="Yes, delete" @icon="trash" @size="sm" class="ml-2" />
+        <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) false}}  @variant="secondary" @label="Cancel" @icon="window-close" @size="sm"  class="ml-2" />
+      {{else}}
+        <Ui::Button @onClick={{fn (mut this.isEditing) true}}  @variant="secondary" @label="Edit" @icon="edit" @size="sm" />
+        <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) true}}  @variant="danger" @icon="trash" @label="Delete" @size="sm" class="ml-2" />
+      {{/if}}
+    </div>
+    {{! #endregion }}
   </div>
   {{! #endregion }}
 </div>

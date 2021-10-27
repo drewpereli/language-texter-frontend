@@ -13,7 +13,8 @@ export default class ChallengeModel extends Model {
   @attr('string', { defaultValue: 'queued' }) declare status: string;
   @attr('date', { defaultValue: () => new Date() }) declare createdAt: Date;
 
-  @belongsTo('user', { async: false }) declare user: UserModel;
+  @belongsTo('user', { async: false }) declare creator?: UserModel; // Should only be undefined if new
+  @belongsTo('user', { async: false }) declare student?: UserModel; // Should only be undefined if new
 
   @hasMany('attempts', { async: false }) declare attempts: EmberArray<AttemptModel>;
 
