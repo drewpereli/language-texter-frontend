@@ -14,6 +14,7 @@ Router.map(function () {
     this.route('logout');
     this.route('change-password');
     this.route('challenge', { path: '/challenges/:challenge_id' });
+    this.route('invitations');
   });
   this.route('sign-up');
   this.route('confirm-user');

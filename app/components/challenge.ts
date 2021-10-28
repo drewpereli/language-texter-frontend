@@ -10,16 +10,16 @@ import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import { TaskGenerator } from 'ember-concurrency';
 import { Language } from 'custom-types';
 import { taskFor } from 'ember-concurrency-ts';
+import { SelectOption } from './ui/select';
+import CurrentUserService from 'spanish-texter/services/current-user';
 
 interface Args {
   challenge: ChallengeModel;
 }
 
-/**
- * @param {ChallengeModel} challenge
- */
 export default class ChallengeComponent extends Component<Args> {
   @service declare flashMessages: FlashMessageService;
+  @service declare currentUser: CurrentUserService;
 
   googleTranslateClient: GoogleTranslateClient = new GoogleTranslateClient();
 
@@ -45,6 +45,42 @@ export default class ChallengeComponent extends Component<Args> {
     let completionPercentage = 100 * completionFraction;
 
     return `width: ${completionPercentage}%`;
+  }
+
+  get studentCreatorText(): string {
+    let { student, creator } = this.args.challenge;
+
+    if (!student || !creator) {
+      return '';
+    }
+
+    if (student.isCurrentUser && creator.isCurrentUser) {
+      return 'Created by and assigned to you';
+    }
+
+    if (student.isCurrentUser) {
+      return `Created by ${creator.username}`;
+    }
+
+    return `Assigned to ${student.username}`;
+  }
+
+  get studentOptions(): SelectOption[] | null {
+    let user = this.currentUser.user;
+
+    if (!user || user.students.length === 0) {
+      return null;
+    }
+
+    let studentOptions = user.students.map((student) => {
+      return {
+        id: student.id,
+        label: student.username,
+        value: student,
+      };
+    });
+
+    return [{ id: user.id, label: 'You', value: user }, ...studentOptions];
   }
 
   @dropTask
