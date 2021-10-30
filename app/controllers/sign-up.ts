@@ -51,7 +51,13 @@ export default class SignUp extends Controller {
         return;
       }
 
-      let user = { username, phone_number: phoneNumber, password, password_confirmation: passwordConfirmation };
+      let user = {
+        username,
+        phone_number: phoneNumber,
+        password,
+        password_confirmation: passwordConfirmation,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      };
 
       let url = `${ENV.APP.apiHost}/users`;
 
