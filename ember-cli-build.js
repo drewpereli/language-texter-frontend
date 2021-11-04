@@ -14,6 +14,11 @@ module.exports = function (defaults) {
         node: {
           global: true,
         },
+				resolve: {
+					fallback: {
+						stream: false
+					}
+				}
       },
       exclude: [
         '@fortawesome/fontawesome-common-types',
