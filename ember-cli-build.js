@@ -45,6 +45,19 @@ module.exports = function (defaults) {
         plugins: [autoprefixer],
       },
     },
+		svgJar: {
+      strategy: ['hbs'],
+      hbs: {
+        stripPath: false,
+      },
+      sourceDirs: [
+        'public/assets',
+        'node_modules/@elastic/eui/lib/components/icon',
+      ],
+    },
+		'@ember-eui/core': {
+      theme: 'dark', //light, dark, amsterdam_dark, amsterdam_light 
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
