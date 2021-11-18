@@ -3,18 +3,28 @@ import { tracked } from '@glimmer/tracking';
 import { TaskGenerator } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency-decorators';
-import { SessionService } from 'custom-types';
+import { SessionService, ValidationsObject } from 'custom-types';
 import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import fetch from 'fetch';
 import ENV from 'spanish-texter/config/environment';
 import { capitalize } from '@ember/string';
 import { getPasswordValidationInfo } from 'spanish-texter/utils/validation-utils';
+import { validatePresence, validateFormat, validateConfirmation } from 'ember-changeset-validations/validators';
+import validatePasswordStrength from 'spanish-texter/validators/validate-password-strength';
 
+const Validations: ValidationsObject = {
+  username: validatePresence(true),
+  phoneNumber: validateFormat({ allowBlank: false, type: 'phone' }),
+  password: validatePasswordStrength(),
+  passwordConfirmation: validateConfirmation({ on: 'password', allowBlank: false }),
+};
 export default class SignUp extends Controller {
-  @tracked protected username: string | undefined;
-  @tracked protected phoneNumber: string | undefined;
-  @tracked protected password: string | undefined;
-  @tracked protected passwordConfirmation: string | undefined;
+  @tracked protected username = '';
+  @tracked protected phoneNumber = '';
+  @tracked protected password = '';
+  @tracked protected passwordConfirmation = '';
+
+  Validations = Validations;
 
   protected get passwordError(): string | null {
     if (!this.password) {
@@ -100,8 +110,8 @@ export default class SignUp extends Controller {
       this.flashMessages.danger('There was an error. Please try again later.');
     }
 
-    this.password = undefined;
-    this.passwordConfirmation = undefined;
+    this.password = '';
+    this.passwordConfirmation = '';
   }
 
   @service private declare session: SessionService;
