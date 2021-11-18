@@ -5,14 +5,21 @@ import { inject as service } from '@ember/service';
 import { TaskGenerator } from 'ember-concurrency';
 import { SessionService } from 'custom-types';
 import FlashMessageService from 'ember-cli-flash/services/flash-messages';
+import { validatePresence } from 'ember-changeset-validations/validators';
+
+const Validations = {
+  username: validatePresence(true),
+  password: validatePresence(true),
+};
 
 export default class LoginController extends Controller {
   @service declare session: SessionService;
   @service declare flashMessages: FlashMessageService;
 
-  @tracked username: string | undefined;
-  @tracked password: string | undefined;
-  @tracked errorMessage: string | undefined;
+  Validations = Validations;
+
+  @tracked username = '';
+  @tracked password = '';
 
   @dropTask
   *onSubmit(): TaskGenerator<void> {
