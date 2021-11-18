@@ -1,13 +1,20 @@
 <div class="flex flex-col p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
-  {{! #region spanish }}
-  <div>
-    {{#if this.isNewOrEditing}}
-      {{! #region spanish input and suggestion }}
-      <Ui::Input
-        @value={{@challenge.spanishText}}
-        @label="spanish"
-        @onInputValue={{fn this.onInputChallengeText "spanish"}}
-      />
+  {{#if this.isNewOrEditing}}
+    <EuiChangesetForm
+      @onSubmit={{this.saveChallenge.perform}}
+      @changeset={{changeset @challenge @challenge.Validations}} 
+      @runExecuteInsteadOfSave={{true}}
+      @fullWidth={{true}}
+      as |Form changesetObj|
+    >
+
+      {{! #region spanish text }}
+      <Form.FieldText
+        @fieldName="spanishText"
+        @label="Spanish"
+        {{on "input" (pick "target.value" (fn this.onInputChallengeText "spanish"))}}
+      >
+      </Form.FieldText>
 
       <div class="mt-2 text-sm flex items-center h-6">
         <span class="text-gray-400">SUGGESTION:</span>
@@ -16,55 +23,37 @@
           <Ui::LoadingIndicator class="w-8 ml-4" />
         {{else if this.spanishTranslationSuggestion}}
           <span class="ml-1 italic">"{{this.spanishTranslationSuggestion}}"</span>
-          <Ui::Button 
-            @icon="arrow-up" 
-            @variant="success" 
-            @size="sm" 
-            @onClick={{fn (mut @challenge.spanishText) this.spanishTranslationSuggestion}}
-            class="ml-2" 
+
+          <EuiButtonIcon
+            @color="success"
+            @iconType="arrowUp"
+            @fill={{true}}
+            class="ml-2"
+            {{on "click" (fn (mut @challenge.spanishText) this.spanishTranslationSuggestion)}}
           />
         {{else}}
           <span class="ml-2 text-gray-400">--</span>
         {{/if}}
       </div>
+      {{! #endregion }}
 
-      <Ui::Input
-        @value={{@challenge.spanishTextNote}}
-        @label="spanish note (will be sent with spanish text)"
-        @onInputValue={{fn (mut @challenge.spanishTextNote)}}
-        class="mt-2"
+      {{! #region spanish note }}
+      <Form.FieldText
+        @fieldName="spanishTextNote"
+        @label="Spanish Note"
+        @helpText="Text to send with spanish text"
+        @rowClasses="mt-6"
+        {{on "input" (pick "target.value" (fn (mut @challenge.spanishTextNote)))}}
       />
       {{! #endregion }}
-    {{else}}
-      {{! #region spanish text and view-progress button }}
-      <div class="flex items-center justify-between">
-        <div>
-          <span class="font-bold text-gray-400">Spanish:</span>
-          <span class="ml-1">"{{@challenge.spanishText}}"</span>
 
-          {{#if @challenge.spanishTextNote}}
-            <span class="ml-1 text-gray-400">(Note: {{@challenge.spanishTextNote}})</span>
-          {{/if}}
-        </div>
-
-        {{#unless @challenge.isQueued}}
-          <LinkTo @route="authenticated.challenge" class="text-gray-400 underline hover:text-gray-300" @model={{@challenge.id}}>View Attempts</LinkTo>
-        {{/unless}}
-      </div>
-      {{! #endregion }}
-    {{/if}}
-  </div>
-  {{! #endregion }}
-
-  {{! #region english }}
-  <div class="mt-6">
-    {{#if this.isNewOrEditing}}
-      {{! #region english input and suggestion }}
-      <Ui::Input
-        @value={{@challenge.englishText}}
-        @label="english"
-        @onInputValue={{fn this.onInputChallengeText "english"}}
-      />
+      {{! #region english text }}
+      <Form.FieldText
+        @fieldName="englishText"
+        @label="English"
+        {{on "input" (pick "target.value" (fn this.onInputChallengeText "english"))}}
+      >
+      </Form.FieldText>
 
       <div class="mt-2 text-sm flex items-center h-6">
         <span class="text-gray-400">SUGGESTION:</span>
@@ -73,107 +62,148 @@
           <Ui::LoadingIndicator class="w-8 ml-4" />
         {{else if this.englishTranslationSuggestion}}
           <span class="ml-1 italic">"{{this.englishTranslationSuggestion}}"</span>
-          <Ui::Button 
-            @icon="arrow-up" 
-            @variant="success" 
-            @size="sm" 
-            @onClick={{fn (mut @challenge.englishText) this.englishTranslationSuggestion}}
-            class="ml-2" 
+
+          <EuiButtonIcon
+            @color="success"
+            @iconType="arrowUp"
+            @fill={{true}}
+            class="ml-2"
+            {{on "click" (fn (mut @challenge.englishText) this.englishTranslationSuggestion)}}
           />
         {{else}}
           <span class="ml-2 text-gray-400">--</span>
         {{/if}}
       </div>
+      {{! #endregion }}
 
-      <Ui::Input
-        @value={{@challenge.englishTextNote}}
-        @label="english note (will be sent with english text)"
-        @onInputValue={{fn (mut @challenge.englishTextNote)}}
-        class="mt-2"
+      {{! #region english note }}
+      <Form.FieldText
+        @fieldName="englishTextNote"
+        @label="English Note"
+        @helpText="Text to send with english text"
+        @rowClasses="mt-6"
+        {{on "input" (pick "target.value" (fn (mut @challenge.englishTextNote)))}}
       />
       {{! #endregion }}
-    {{else}}
-      {{! #region english text }}
-      <div>
-        <span class="font-bold text-gray-400">English:</span>
-        <span class="ml-1">"{{@challenge.englishText}}"</span>
+      
+      {{! #region required streak }}
+      <Form.FieldNumber
+        @fieldName="requiredScore"
+        @value={{@challenge.requiredScore}}
+        @label="Required Streak for Completion"
+        @onChangeValue={{fn (mut @challenge.requiredScore)}}
+        @rowClasses="mt-6"
+        {{on "input" (pick "target.value" (fn (mut @challenge.requiredScore)))}}
+      />
+      {{! #endregion }}
 
-        {{#if @challenge.englishTextNote}}
-          <span class="ml-1 text-gray-400">(Note: {{@challenge.englishTextNote}})</span>
+      {{! #region students }}
+      {{#if this.studentOptions.length}}  
+        <Form.FieldSelect
+          @fieldName="student"
+          @options={{this.studentOptions}}
+          @label="Assign to"
+          @rowClasses="mt-6"
+        />
+      {{/if}}
+      {{! #endregion }}
+
+      {{! #region save/cancel }}
+      <div class="mt-8">
+        <EuiButton @type="submit" @color="primary" @fill={{true}} @iconType="save" @isLoading={{this.saveChallenge.isRunning}} @isDisabled={{changesetObj.isInvalid}}>
+          Save
+        </EuiButton>
+
+        <EuiButton @fill={{true}} @iconType="cross" @color="text" {{on "click" this.cancel}} class="ml-2">
+          Cancel
+        </EuiButton>
+      </div>
+      {{! #endregion }}
+
+    </EuiChangesetForm>
+  {{else}}
+    {{! #region spanish text and view-progress button }}
+    <div class="flex items-center justify-between">
+      <div>
+        <span class="font-bold text-gray-400">Spanish:</span>
+        <span class="ml-1">"{{@challenge.spanishText}}"</span>
+
+        {{#if @challenge.spanishTextNote}}
+          <span class="ml-1 text-gray-400">(Note: {{@challenge.spanishTextNote}})</span>
         {{/if}}
       </div>
-      {{! #endregion }}
-    {{/if}}
-  </div>
-  {{! #endregion }}
 
-  {{! #region required streak }}
-  <div class="mt-6">
-    {{#if this.isNewOrEditing}}
-      <Ui::Input
-        @value={{@challenge.requiredScore}}
-        @label="required streak for completion"
-        @onChangeValue={{fn (mut @challenge.requiredScore)}}
-        @type="number"
-      />
-    {{else if @challenge.isQueued}}
-      <div class="flex items-center text-gray-400">
-        <FaIcon @icon="clock" />
-        <span class="ml-2">Challenge queued</span>
-      </div>
-    {{else if @challenge.isActive}}
-      <div>
-        <div class="font-bold text-gray-400">Current Streak</div>
-        <div class="relative w-full h-6 rounded-full overflow-hidden bg-gray-400 mt-3">
-          <div class="absolute top-0 left-0 bg-green-400 h-full" style={{this.streakBarInnerStyle}} />
-          <div class="absolute top-0 left-0 h-full text-gray-900 font-mono text-sm pl-4 flex items-center">
-            {{@challenge.currentStreak}}/{{@challenge.requiredScore}}
-          </div>
-        </div>
-      </div>
-    {{else if @challenge.isComplete}}
-      <div class="flex items-center">
-        <FaIcon @icon="check" class="text-green-400" />
-        <span class="ml-2 text-gray-400">Challenge complete</span>
-      </div>
-    {{/if}}
-  </div>
-  {{! #endregion }}
-
-  {{! #region student assignment }}
-  {{#if (and this.isNewOrEditing this.studentOptions.length)}}  
-    <div class="mt-6">
-      <Ui::Select
-        @options={{this.studentOptions}}
-        @selectedOptionId={{@challenge.student.id}}
-        @label="assign to"
-        @onChangeValue={{fn (mut @challenge.student)}}
-      />
+      {{#unless @challenge.isQueued}}
+        <LinkTo @route="authenticated.challenge" class="text-gray-400 underline hover:text-gray-300" @model={{@challenge.id}}>View Attempts</LinkTo>
+      {{/unless}}
     </div>
-  {{/if}}
-  {{! #endregion }}
+    {{! #endregion }}
 
-  {{! #region ui buttons and created-by }}
-  <div class="mt-8 flex items-center justify-between">
-    <div class="text-sm text-gray-500">{{this.studentCreatorText}}</div>
-    
-    {{! #region save/edit/delete buttons }}
-    <div class="flex items-center">
-      {{#if this.isNewOrEditing}}
-        <div class="self-end flex">
-          <Ui::Button @task={{this.saveChallenge}} @variant="primary" @label="Save" @icon="save" @size="sm" />
-          <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" @size="sm" class="ml-2" />
-        </div>
-      {{else if this.showDeleteConfirmation}}
-        Delete this challenge?
-        <Ui::Button @task={{this.destroyChallenge}}  @variant="danger" @label="Yes, delete" @icon="trash" @size="sm" class="ml-2" />
-        <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) false}}  @variant="secondary" @label="Cancel" @icon="window-close" @size="sm"  class="ml-2" />
-      {{else}}
-        <Ui::Button @onClick={{fn (mut this.isEditing) true}}  @variant="secondary" @label="Edit" @icon="edit" @size="sm" />
-        <Ui::Button @onClick={{fn (mut this.showDeleteConfirmation) true}}  @variant="danger" @icon="trash" @label="Delete" @size="sm" class="ml-2" />
+    {{! #region english }}
+    <div class="mt-6">
+      <span class="font-bold text-gray-400">English:</span>
+      <span class="ml-1">"{{@challenge.englishText}}"</span>
+
+      {{#if @challenge.englishTextNote}}
+        <span class="ml-1 text-gray-400">(Note: {{@challenge.englishTextNote}})</span>
       {{/if}}
     </div>
     {{! #endregion }}
-  </div>
-  {{! #endregion }}
+
+    {{! #region required streak }}
+    <div class="mt-6">
+      {{#if @challenge.isQueued}}
+        <div class="flex items-center text-gray-400">
+          <FaIcon @icon="clock" />
+          <span class="ml-2">Challenge queued</span>
+        </div>
+      {{else if @challenge.isActive}}
+        <div>
+          <div class="font-bold text-gray-400">Current Streak</div>
+          <div class="relative w-full h-6 rounded-full overflow-hidden bg-gray-400 mt-3">
+            <div class="absolute top-0 left-0 bg-green-400 h-full" style={{this.streakBarInnerStyle}} />
+            <div class="absolute top-0 left-0 h-full text-gray-900 font-mono text-sm pl-4 flex items-center">
+              {{@challenge.currentStreak}}/{{@challenge.requiredScore}}
+            </div>
+          </div>
+        </div>
+      {{else if @challenge.isComplete}}
+        <div class="flex items-center">
+          <FaIcon @icon="check" class="text-green-400" />
+          <span class="ml-2 text-gray-400">Challenge complete</span>
+        </div>
+      {{/if}}
+    </div>
+    {{! #endregion }}
+
+    {{! #region ui buttons and created-by }}
+    <div class="mt-8 flex items-center justify-between">
+      <div class="text-sm text-gray-500">{{this.studentCreatorText}}</div>
+      
+      {{! #region save/edit/delete buttons }}
+      <div class="flex items-center">
+        {{#if this.showDeleteConfirmation}}
+          Delete this challenge?
+          <EuiButton @size="s" @fill={{true}}  @color="danger" @iconType="trash" class="ml-2" {{on "click" (perform this.destroyChallenge)}} @isLoading={{this.destroyChallenge.isRunning}}>
+            Yes, delete
+          </EuiButton>
+          
+          <EuiButton @size="s" @fill={{true}} {{on "click" (fn (mut this.showDeleteConfirmation) false)}}  @color="secondary" @iconType="cross" class="ml-2">
+            Cancel
+          </EuiButton>
+        {{else}}
+          <EuiButton @size="s" @fill={{true}} {{on "click" (fn (mut this.isEditing) true)}}  @color="text" @iconType="pencil">
+            Edit
+          </EuiButton>
+
+          <EuiButton @size="s" @fill={{true}}  @color="danger" @iconType="trash" class="ml-2" {{on "click" (fn (mut this.showDeleteConfirmation) true)}}>
+            Delete
+          </EuiButton>
+        {{/if}}
+      </div>
+      {{! #endregion }}
+    </div>
+    {{! #endregion }}
+  {{/if}}
+  
 </div>

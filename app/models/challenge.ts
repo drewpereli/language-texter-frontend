@@ -2,6 +2,8 @@ import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import AttemptModel from './attempt';
 import UserModel from './user';
 import EmberArray from '@ember/array';
+import { ValidationsObject } from 'custom-types';
+import { validateNumber, validatePresence } from 'ember-changeset-validations/validators';
 
 export default class ChallengeModel extends Model {
   @attr('string', { defaultValue: '' }) declare spanishText: string;
@@ -29,4 +31,10 @@ export default class ChallengeModel extends Model {
   get isComplete(): boolean {
     return this.status === 'complete';
   }
+
+  Validations: ValidationsObject = {
+    spanishText: validatePresence(true),
+    englishText: validatePresence(true),
+    requiredScore: validateNumber({ allowBlank: false, gt: 0 }),
+  };
 }

@@ -10,8 +10,8 @@ import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import { TaskGenerator } from 'ember-concurrency';
 import { Language } from 'custom-types';
 import { taskFor } from 'ember-concurrency-ts';
-import { SelectOption } from './ui/select';
 import CurrentUserService from 'spanish-texter/services/current-user';
+import UserModel from 'spanish-texter/models/user';
 
 interface Args {
   challenge: ChallengeModel;
@@ -62,7 +62,7 @@ export default class ChallengeComponent extends Component<Args> {
     return `Assigned to ${student.username}`;
   }
 
-  get studentOptions(): SelectOption[] | null {
+  get studentOptions(): { value: UserModel; label: string }[] | null {
     let user = this.currentUser.user;
 
     if (!user || user.students.length === 0) {
@@ -71,19 +71,19 @@ export default class ChallengeComponent extends Component<Args> {
 
     let studentOptions = user.students.map((student) => {
       return {
-        id: student.id,
         label: student.username,
         value: student,
       };
     });
 
-    return [{ id: user.id, label: 'You', value: user }, ...studentOptions];
+    return [{ label: 'You', value: user }, ...studentOptions];
   }
 
   @dropTask
   *saveChallenge(): TaskGenerator<void> {
     try {
       yield this.args.challenge.save();
+
       let message = 'Challenge saved ';
 
       if (this.args.challenge.status === 'queued') {
