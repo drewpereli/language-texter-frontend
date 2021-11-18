@@ -37,10 +37,7 @@ export default class ChallengeComponent extends Component<Args> {
   }
 
   get streakBarInnerStyle(): string {
-    let completionFraction = Math.min(
-      this.args.challenge.currentStreak / this.args.challenge.requiredStreakForCompletion,
-      1
-    );
+    let completionFraction = Math.min(this.args.challenge.currentStreak / this.args.challenge.requiredScore, 1);
 
     let completionPercentage = 100 * completionFraction;
 

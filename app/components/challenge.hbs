@@ -111,9 +111,9 @@
   <div class="mt-6">
     {{#if this.isNewOrEditing}}
       <Ui::Input
-        @value={{@challenge.requiredStreakForCompletion}}
+        @value={{@challenge.requiredScore}}
         @label="required streak for completion"
-        @onChangeValue={{fn (mut @challenge.requiredStreakForCompletion)}}
+        @onChangeValue={{fn (mut @challenge.requiredScore)}}
         @type="number"
       />
     {{else if @challenge.isQueued}}
@@ -127,7 +127,7 @@
         <div class="relative w-full h-6 rounded-full overflow-hidden bg-gray-400 mt-3">
           <div class="absolute top-0 left-0 bg-green-400 h-full" style={{this.streakBarInnerStyle}} />
           <div class="absolute top-0 left-0 h-full text-gray-900 font-mono text-sm pl-4 flex items-center">
-            {{@challenge.currentStreak}}/{{@challenge.requiredStreakForCompletion}}
+            {{@challenge.currentStreak}}/{{@challenge.requiredScore}}
           </div>
         </div>
       </div>

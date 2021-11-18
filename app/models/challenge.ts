@@ -8,7 +8,7 @@ export default class ChallengeModel extends Model {
   @attr('string', { defaultValue: '' }) declare englishText: string;
   @attr('string') declare spanishTextNote?: string;
   @attr('string') declare englishTextNote?: string;
-  @attr('number', { defaultValue: 20 }) declare requiredStreakForCompletion: number;
+  @attr('number', { defaultValue: 20 }) declare requiredScore: number;
   @attr('number', { defaultValue: 0 }) declare currentStreak: number;
   @attr('string', { defaultValue: 'queued' }) declare status: string;
   @attr('date', { defaultValue: () => new Date() }) declare createdAt: Date;
