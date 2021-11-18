@@ -28,3 +28,13 @@ export interface AdapterError extends Error {
   errors: AdapterErrorEntry[];
   isAdapterError: true;
 }
+
+type Validator<T = unknown> = (
+  key: string,
+  newValue: T,
+  oldValue: T,
+  changes: Record<string, unknown>,
+  content: Record<string, unknown>
+) => true | string;
+
+type ValidationsObject = Record<string, Validator | Validator[]>;
