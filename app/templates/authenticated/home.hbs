@@ -3,7 +3,13 @@
 <div class="p-8 flex justify-center">
   <div class="w-full max-w-3xl">
 
-    <Ui::Button @onClick={{this.createNewChallenge}} @variant="primary" @label="Add New Challenge" @icon="plus-square" />
+    <EuiButton
+      @fill={{true}}
+      @iconType="plus"
+      {{on "click" this.createNewChallenge}}
+    >
+      Add New Challenge
+    </EuiButton>
 
     {{#each this.newChallenges as |challenge|}}      
       <Challenge @challenge={{challenge}} class="mt-8" />

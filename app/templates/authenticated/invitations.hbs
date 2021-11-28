@@ -3,7 +3,13 @@
 <div class="p-8 flex justify-center">
   <div class="w-full max-w-3xl">
 
-    <Ui::Button @onClick={{this.createNewStudentTeacherInvitation}} @variant="primary" @label="Invite a Teacher or Student" @icon="plus-square" />
+    <EuiButton
+      @fill={{true}}
+      @iconType="plus"
+      {{on "click" this.createNewStudentTeacherInvitation}}
+    >
+      Invite a Teacher or Student
+    </EuiButton>
 
     {{#each this.newStudentTeacherInvitations as |invitation|}}      
       <StudentTeacherInvitation @studentTeacherInvitation={{invitation}} class="mt-8" />
