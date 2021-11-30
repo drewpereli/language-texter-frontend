@@ -16,19 +16,25 @@
     {{/each}}
 
     {{#each this.invitationLists as |list|}}
-      <Ui::Collapsible @startCollapsed={{eq list.invitations.length 0}} class="mt-8" as |c|>
-        <c.trigger class="w-full flex items-center justify-between p-4 rounded bg-gray-700 hover:bg-gray-600">
+      <EuiAccordion 
+        @initialIsOpen={{list.invitations.length}} 
+        @buttonClassName="px-4 rounded bg-gray-700 hover:bg-gray-600"
+        @buttonContentClassName="p-4"
+        class="mt-8"
+      >
+        <:buttonContent>
           <h3 class="text-xl uppercase font-medium">{{list.label}}</h3>
-          <FaIcon @icon={{if c.isCollapsed "chevron-up" "chevron-down"}} class="ml-4" />
-        </c.trigger>
-        <c.content class="mt-4">
-          {{#each list.invitations as |invitation|}}
-            <StudentTeacherInvitation @studentTeacherInvitation={{invitation}} class="mt-8 first:mt-0" />
-          {{else}}
-            <div class="text-gray-400">There's nothing here ¯&bsol;_(ツ)_/¯</div>
-          {{/each}}
-        </c.content>
-      </Ui::Collapsible>
+        </:buttonContent>
+        <:content>
+          <div class="mt-4">
+            {{#each list.invitations as |invitation|}}
+              <StudentTeacherInvitation @studentTeacherInvitation={{invitation}} class="mt-8 first:mt-0" />
+            {{else}}
+              <div class="text-gray-400">There's nothing here ¯&bsol;_(ツ)_/¯</div>
+            {{/each}}
+          </div>
+        </:content>
+      </EuiAccordion>
     {{/each}}
 
   </div>

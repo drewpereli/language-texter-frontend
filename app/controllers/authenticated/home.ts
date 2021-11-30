@@ -9,9 +9,9 @@ export default class AuthenticatedHomeController extends Controller {
   @service declare store: StoreService;
 
   challengeLists = [
-    { status: 'queued', startCollapsed: true },
-    { status: 'active', startCollapsed: false },
-    { status: 'complete', startCollapsed: true },
+    { status: 'queued', startOpen: false },
+    { status: 'active', startOpen: true },
+    { status: 'complete', startOpen: false },
   ];
 
   get newChallenges(): EmberArray<ChallengeModel> {

@@ -16,19 +16,19 @@
     {{/each}}
 
     {{#each this.challengeLists as |list|}}  
-      <Ui::Collapsible 
-        @startCollapsed={{list.startCollapsed}}
+      <EuiAccordion 
+        @initialIsOpen={{list.startOpen}}
+        @buttonClassName="px-4 rounded bg-gray-700 hover:bg-gray-600"
+        @buttonContentClassName="p-4"
         class="mt-8"
-        as |c|
       >
-        <c.trigger class="w-full flex items-center justify-between p-4 rounded bg-gray-700 hover:bg-gray-600">
+        <:buttonContent>
           <h3 class="text-xl uppercase font-medium">{{list.status}}</h3>
-          <FaIcon @icon={{if c.isCollapsed "chevron-up" "chevron-down"}} class="ml-4" />
-        </c.trigger>
-        <c.content class="mt-4">
-          <ChallengeList class="w-full max-w-3xl" @status={{list.status}} />
-        </c.content>
-      </Ui::Collapsible>
+        </:buttonContent>
+        <:content>
+          <ChallengeList class="w-full max-w-3xl mt-4" @status={{list.status}} />
+        </:content>
+      </EuiAccordion>
     {{/each}}
   </div>
 </div>
