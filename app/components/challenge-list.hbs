@@ -8,16 +8,10 @@
 
     <InfinityLoader @infinityModel={{this.challenges}}>
       {{#if this.challenges.loadingMore}}  
-        <div class="mt-8 flex items-center text-gray-400">
-          <Ui::LoadingIndicator />
-          <span class="ml-4">Loading...</span>
-        </div>
+        <EuiProgress @color="primary" @size="s" class="mt-8" />
       {{/if}}
     </InfinityLoader>
   {{else}}
-    <div class="flex items-center text-gray-400">
-      <Ui::LoadingIndicator />
-      <span class="ml-4">Loading...</span>
-    </div>
+    <EuiProgress @color="primary" @size="s" />
   {{/if}}
 </div>
