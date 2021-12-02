@@ -3,9 +3,17 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
-import { SessionService } from 'custom-types';
+import { SessionService, ValidationsObject } from 'custom-types';
 import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import { TaskGenerator } from 'ember-concurrency';
+import { validatePresence, validateConfirmation } from 'ember-changeset-validations/validators';
+import validatePasswordStrength from 'spanish-texter/validators/validate-password-strength';
+
+const Validations: ValidationsObject = {
+  oldPassword: validatePresence(true),
+  newPassword: validatePasswordStrength(),
+  newPasswordConfirmation: validateConfirmation({ on: 'newPassword', allowBlank: false }),
+};
 
 export default class AuthenticatedChangePasswordController extends Controller {
   @service declare session: SessionService;
@@ -14,6 +22,8 @@ export default class AuthenticatedChangePasswordController extends Controller {
   @tracked oldPassword: string | undefined;
   @tracked newPassword: string | undefined;
   @tracked newPasswordConfirmation: string | undefined;
+
+  Validations = Validations;
 
   @dropTask
   *onSubmit(): TaskGenerator<void> {

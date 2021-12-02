@@ -1,7 +1,8 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 import UserModel from './user';
 import { inject as service } from '@ember/service';
-import { SessionService } from 'custom-types';
+import { SessionService, ValidationsObject } from 'custom-types';
+import { validateFormat, validatePresence } from 'ember-changeset-validations/validators';
 
 export type StudentTeacherRequestedRole = 'teacher' | 'student';
 export type StudentTeacherInvitationStatus = 'sent' | 'accepted' | 'rejected';
@@ -66,4 +67,9 @@ export default class StudentTeacherInvitationModel extends Model {
 
     throw new Error('Should not be seeing invitation that is neither new, nor received nor send by the current user');
   }
+
+  Validations: ValidationsObject = {
+    recipientName: validatePresence(true),
+    recipientPhoneNumber: validateFormat({ type: 'phone' }),
+  };
 }

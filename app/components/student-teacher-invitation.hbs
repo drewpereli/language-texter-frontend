@@ -1,26 +1,28 @@
 <div class="p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
 
   {{#if this.invitation.isNew}}
-    <div class="flex flex-col">
-      <Ui::Input
-        @value={{this.invitation.recipientName}}
-        @label="recipient name"
-        @onInputValue={{fn (mut this.invitation.recipientName)}}
-        @error={{this.recipientNameError}}
+    <EuiChangesetForm
+      @onSubmit={{perform this.save}}
+      @changeset={{changeset this.invitation this.invitation.Validations}} 
+      @runExecuteInsteadOfSave={{true}}
+      @fullWidth={{true}}
+      as |Form changesetObj|
+    >
+      <Form.FieldText
+        @fieldName="recipientName"
+        @label="Recipient Name"
       />
       
-      <Ui::Input
-        @value={{this.invitation.recipientPhoneNumber}}
-        @label="recipient phone number"
+      <Form.FieldText
+        @fieldName="recipientPhoneNumber"
+        @label="Recipient Phone Number"
         @type="tel"
-        @onInputValue={{fn (mut this.invitation.recipientPhoneNumber)}}
-        @error={{this.recipientPhoneNumberError}}
-        class="mt-6"
       />
 
 
       <div class="mt-6">
-        <span class="text-xs">requested role</span>
+        <EuiFormLabel>Requested Role</EuiFormLabel>
+        
         <span class="mt-1 rounded h-8 flex items-center bg-gray-700 py-2 px-1">
           <span
             {{on "click" (fn (mut this.invitation.requestedRole) "teacher")}}
@@ -52,13 +54,14 @@
           @fill={{true}} 
           @iconType="save" 
           @isLoading={{this.save.isRunning}}
-          {{on "click" this.save.perform}}
-          class="ml-4 px-8"
+          @type="submit"
+          @isDisabled={{changesetObj.isInvalid}}
+          class="ml-4"
         >
           Save
         </EuiButton>
       </div>
-    </div>
+    </EuiChangesetForm>
   {{else}}
     <div class="flex flex-col">
       <div class="flex items-center justify-between">
