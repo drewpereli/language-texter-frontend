@@ -4,7 +4,7 @@ import { dropTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import { TaskGenerator } from 'ember-concurrency';
 import { SessionService } from 'custom-types';
-import FlashMessageService from 'ember-cli-flash/services/flash-messages';
+import { EuiToasterService } from 'custom-types';
 import { validatePresence } from 'ember-changeset-validations/validators';
 
 const Validations = {
@@ -14,7 +14,7 @@ const Validations = {
 
 export default class LoginController extends Controller {
   @service declare session: SessionService;
-  @service declare flashMessages: FlashMessageService;
+  @service declare euiToaster: EuiToasterService;
 
   Validations = Validations;
 
@@ -29,9 +29,9 @@ export default class LoginController extends Controller {
       yield this.session.authenticate('authenticator:jwt', { username, password });
     } catch (error) {
       if (error.status === 401) {
-        this.flashMessages.danger(error.json.errors);
+        this.euiToaster.show({ title: error.json.errors, color: 'danger' });
       } else {
-        this.flashMessages.danger('There was an error. Please try again later.');
+        this.euiToaster.show({ title: 'There was an error.', body: 'Please try again later.', color: 'danger' });
       }
     }
   }

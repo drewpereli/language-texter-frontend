@@ -31,9 +31,5 @@
 
   {{outlet}}
 
-  <div class="fixed bottom-8 right-8">
-    {{#each this.flashMessages.queue as |flash|}}
-      <FlashMessage @flash={{flash}} />
-    {{/each}}
-  </div>
+  <EuiGlobalToastList @toastLifeTimeMs={{3000}} />
 </div>

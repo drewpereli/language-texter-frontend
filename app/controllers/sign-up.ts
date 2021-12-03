@@ -4,11 +4,10 @@ import { TaskGenerator } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency-decorators';
 import { SessionService, ValidationsObject } from 'custom-types';
-import FlashMessageService from 'ember-cli-flash/services/flash-messages';
+import { EuiToasterService } from 'custom-types';
 import fetch from 'fetch';
 import ENV from 'spanish-texter/config/environment';
 import { capitalize } from '@ember/string';
-import { getPasswordValidationInfo } from 'spanish-texter/utils/validation-utils';
 import { validatePresence, validateFormat, validateConfirmation } from 'ember-changeset-validations/validators';
 import validatePasswordStrength from 'spanish-texter/validators/validate-password-strength';
 
@@ -26,40 +25,10 @@ export default class SignUp extends Controller {
 
   Validations = Validations;
 
-  protected get passwordError(): string | null {
-    if (!this.password) {
-      return null;
-    }
-
-    return this.passwordValidationInfo.errors[0] || this.passwordValidationInfo.warnings[0] || null;
-  }
-
-  private get passwordValidationInfo(): ReturnType<typeof getPasswordValidationInfo> {
-    return getPasswordValidationInfo(this.password);
-  }
-
-  protected get passwordConfirmationError(): string | null {
-    if (this.password && this.passwordConfirmation && this.password !== this.passwordConfirmation) {
-      return "Password confirmation doesn't match password.";
-    }
-
-    return null;
-  }
-
   @dropTask
   protected *onSubmit(): TaskGenerator<void> {
     try {
       let { username, phoneNumber, password, passwordConfirmation } = this;
-
-      if (!this.passwordValidationInfo.valid) {
-        this.flashMessages.danger(this.passwordValidationInfo.errors[0]);
-        return;
-      }
-
-      if (password !== passwordConfirmation) {
-        this.flashMessages.danger("Password doesn't match confirmation");
-        return;
-      }
 
       let user = {
         username,
@@ -80,9 +49,10 @@ export default class SignUp extends Controller {
       });
 
       if (response.ok) {
-        this.flashMessages.success(
-          "Sign up successful. You'll receive a text within the next few minutes with a link to confirm your account."
-        );
+        this.euiToaster.show({
+          title: 'Sign up successful',
+          body: "You'll receive a text within the next few minutes with a link to confirm your account.",
+        });
       } else if (response.status === 401) {
         let body = yield response.json();
 
@@ -102,12 +72,12 @@ export default class SignUp extends Controller {
 
         let errorMessage = errorMessages.join('\n');
 
-        this.flashMessages.danger(errorMessage);
+        this.euiToaster.show({ title: 'There was an error', body: errorMessage, color: 'danger' });
       } else {
-        this.flashMessages.danger('There was an error. Please try again later.');
+        this.euiToaster.show({ title: 'There was an error.', body: 'Please try again later.', color: 'danger' });
       }
     } catch (error) {
-      this.flashMessages.danger('There was an error. Please try again later.');
+      this.euiToaster.show({ title: 'There was an error.', body: 'Please try again later.', color: 'danger' });
     }
 
     this.password = '';
@@ -115,5 +85,5 @@ export default class SignUp extends Controller {
   }
 
   @service private declare session: SessionService;
-  @service private declare flashMessages: FlashMessageService;
+  @service private declare euiToaster: EuiToasterService;
 }

@@ -6,19 +6,17 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import GoogleTranslateClient from 'spanish-texter/utils/google-translate-client';
 import ChallengeModel from 'spanish-texter/models/challenge';
-import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import { TaskGenerator } from 'ember-concurrency';
-import { Language } from 'custom-types';
+import { EuiToasterService, Language } from 'custom-types';
 import { taskFor } from 'ember-concurrency-ts';
 import CurrentUserService from 'spanish-texter/services/current-user';
 import UserModel from 'spanish-texter/models/user';
-
 interface Args {
   challenge: ChallengeModel;
 }
 
 export default class ChallengeComponent extends Component<Args> {
-  @service declare flashMessages: FlashMessageService;
+  @service declare euiToaster: EuiToasterService;
   @service declare currentUser: CurrentUserService;
 
   googleTranslateClient: GoogleTranslateClient = new GoogleTranslateClient();
@@ -84,18 +82,27 @@ export default class ChallengeComponent extends Component<Args> {
     try {
       yield this.args.challenge.save();
 
-      let message = 'Challenge saved ';
+      let title = 'Challenge saved';
 
-      if (this.args.challenge.status === 'queued') {
-        message += 'and added to the queue';
-      } else {
-        message += 'and added to active challenges';
-      }
+      let body =
+        this.args.challenge.status === 'queued'
+          ? 'Challenge added to the queue'
+          : 'Challenge added to active challenges';
 
-      this.flashMessages.success(message);
+      this.euiToaster.show({
+        title,
+        body,
+        color: 'success',
+      });
+
       this.isEditing = false;
     } catch (error) {
-      this.flashMessages.danger('There was an error saving the challenge. Please try again later.');
+      this.euiToaster.show({
+        title: 'There was an error',
+        body: 'Please try again later.',
+        color: 'danger',
+      });
+
       console.log(error);
     }
   }
@@ -119,10 +126,19 @@ export default class ChallengeComponent extends Component<Args> {
   *destroyChallenge(): TaskGenerator<void> {
     try {
       yield this.args.challenge.destroyRecord();
-      this.flashMessages.success('Challenge deleted');
+      this.euiToaster.show({
+        title: 'Challenge deleted',
+        color: 'success',
+      });
+
       this.showDeleteConfirmation = false;
     } catch (error) {
-      this.flashMessages.danger('There was an error deleting the challenge. Please try again later.');
+      this.euiToaster.show({
+        title: 'There was an error',
+        body: 'Please try again later.',
+        color: 'danger',
+      });
+
       console.log(error);
     }
   }

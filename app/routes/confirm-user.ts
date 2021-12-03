@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import fetch from 'fetch';
 import ENV from 'spanish-texter/config/environment';
 import { inject as service } from '@ember/service';
-import FlashMessageService from 'ember-cli-flash/services/flash-messages';
+import { EuiToasterService } from 'custom-types';
 import { SessionService } from 'custom-types';
 
 interface QueryParams {
@@ -25,7 +25,11 @@ export default class ConfirmUser extends Route {
     });
 
     if (response.ok) {
-      this.flashMessages.success('Your account has been confirmed. You can now log in.');
+      this.euiToaster.show({
+        title: 'Your account has been confirmed.',
+        body: 'You can now log in.',
+        color: 'success',
+      });
       this.transitionTo('login');
     } else {
       let body = await response.json();
@@ -41,7 +45,7 @@ export default class ConfirmUser extends Route {
     user_id: {},
   };
 
-  @service private declare flashMessages: FlashMessageService;
+  @service private declare euiToaster: EuiToasterService;
   @service declare session: SessionService;
 
   beforeModel(): void {

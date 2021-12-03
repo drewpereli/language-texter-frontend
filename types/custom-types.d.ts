@@ -14,6 +14,22 @@ export interface SessionService extends Evented {
   prohibitAuthentication: (route: string) => void;
 }
 
+type ToastColor = 'primary' | 'success' | 'warning' | 'danger';
+
+interface EuiToastProps {
+  id?: string;
+  title: string;
+  body?: string;
+  color?: ToastColor;
+  iconType?: string;
+  toastLifeTimeMs?: number;
+  onClose?: () => void;
+}
+
+export interface EuiToasterService {
+  show(props: EuiToastProps): void;
+}
+
 export type RouteTransition = ReturnType<RouterService['transitionTo']> & { targetName: string };
 
 export type Language = 'spanish' | 'english';

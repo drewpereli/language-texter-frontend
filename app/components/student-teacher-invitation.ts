@@ -3,7 +3,7 @@ import StudentTeacherInvitationModel from 'spanish-texter/models/student-teacher
 import { TaskGenerator } from 'ember-concurrency';
 import { dropTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
-import FlashMessageService from 'ember-cli-flash/services/flash-messages';
+import { EuiToasterService } from 'custom-types';
 import moment from 'moment';
 import { action } from '@ember/object';
 import { isAdapterError } from 'spanish-texter/utils/type-utils';
@@ -30,7 +30,7 @@ export default class StudentTeacherInvitationComponent extends Component<Readonl
     try {
       yield this.invitation.save();
 
-      this.flashMessages.success("Invitation saved! We'll text you when they respond.");
+      this.euiToaster.show({ title: 'Invitation saved!', body: "We'll text you when they respond.", color: 'success' });
     } catch (error) {
       if (!isAdapterError(error) || error.errors.length === 0) {
         return;
@@ -40,7 +40,7 @@ export default class StudentTeacherInvitationComponent extends Component<Readonl
       let attr = responseError.source.pointer.replace('/data/attributes/', '');
 
       if (attr === 'recipient_phone_number') {
-        this.flashMessages.danger('Phone number is invalid.');
+        this.euiToaster.show({ title: 'Phone number is invalid', color: 'danger' });
       }
     }
   }
@@ -50,7 +50,7 @@ export default class StudentTeacherInvitationComponent extends Component<Readonl
     try {
       this.invitation.status = 'accepted';
       yield this.invitation.save();
-      this.flashMessages.success('Invitation accepted!');
+      this.euiToaster.show({ title: 'Invitation accepted!', color: 'success' });
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +61,7 @@ export default class StudentTeacherInvitationComponent extends Component<Readonl
     try {
       this.invitation.status = 'rejected';
       yield this.invitation.save();
-      this.flashMessages.success('Invitation declined');
+      this.euiToaster.show({ title: 'Invitation declined' });
     } catch (error) {
       console.log(error);
     }
@@ -72,5 +72,5 @@ export default class StudentTeacherInvitationComponent extends Component<Readonl
     this.invitation.rollbackAttributes();
   }
 
-  @service private declare flashMessages: FlashMessageService;
+  @service private declare euiToaster: EuiToasterService;
 }
