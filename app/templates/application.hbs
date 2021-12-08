@@ -1,7 +1,7 @@
 {{page-title "SpanishTexter"}}
 
 <div class="h-screen w-screen">
-  <nav class="flex items-center justify-end py-4 px-8 bg-black bg-opacity-20 text-gray-200">
+  <nav class="flex items-center justify-end py-4 px-8 bg-white bg-opacity-10 text-gray-200">
     {{#if this.session.isAuthenticated}}
       <LinkTo @route="authenticated.home" class="hover:underline">
         Home
@@ -31,9 +31,5 @@
 
   {{outlet}}
 
-  <div class="fixed bottom-8 right-8">
-    {{#each this.flashMessages.queue as |flash|}}
-      <FlashMessage @flash={{flash}} />
-    {{/each}}
-  </div>
+  <EuiGlobalToastList @toastLifeTimeMs={{3000}} />
 </div>

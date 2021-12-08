@@ -28,13 +28,3 @@ export function getPasswordValidationInfo(password = ''): ValidationInfo {
 
   return info;
 }
-
-export function getPhoneNumberValidationInfo(phoneNumber = ''): ValidationInfo {
-  let info = new ValidationInfo();
-
-  if (!/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(phoneNumber)) {
-    info.errors.push('Phone number is invalid.');
-  }
-
-  return info;
-}

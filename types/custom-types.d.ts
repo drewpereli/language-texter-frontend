@@ -14,6 +14,22 @@ export interface SessionService extends Evented {
   prohibitAuthentication: (route: string) => void;
 }
 
+type ToastColor = 'primary' | 'success' | 'warning' | 'danger';
+
+interface EuiToastProps {
+  id?: string;
+  title: string;
+  body?: string;
+  color?: ToastColor;
+  iconType?: string;
+  toastLifeTimeMs?: number;
+  onClose?: () => void;
+}
+
+export interface EuiToasterService {
+  show(props: EuiToastProps): void;
+}
+
 export type RouteTransition = ReturnType<RouterService['transitionTo']> & { targetName: string };
 
 export type Language = 'spanish' | 'english';
@@ -28,3 +44,13 @@ export interface AdapterError extends Error {
   errors: AdapterErrorEntry[];
   isAdapterError: true;
 }
+
+type Validator<T = unknown> = (
+  key: string,
+  newValue: T,
+  oldValue: T,
+  changes: Record<string, unknown>,
+  content: Record<string, unknown>
+) => true | string;
+
+type ValidationsObject = Record<string, Validator | Validator[]>;

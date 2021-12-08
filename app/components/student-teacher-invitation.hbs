@@ -1,50 +1,67 @@
 <div class="p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
 
   {{#if this.invitation.isNew}}
-    <div class="flex flex-col">
-      <Ui::Input
-        @value={{this.invitation.recipientName}}
-        @label="recipient name"
-        @onInputValue={{fn (mut this.invitation.recipientName)}}
-        @error={{this.recipientNameError}}
+    <EuiChangesetForm
+      @onSubmit={{perform this.save}}
+      @changeset={{changeset this.invitation this.invitation.Validations}} 
+      @runExecuteInsteadOfSave={{true}}
+      @fullWidth={{true}}
+      as |Form changesetObj|
+    >
+      <Form.FieldText
+        @fieldName="recipientName"
+        @label="Recipient Name"
       />
       
-      <Ui::Input
-        @value={{this.invitation.recipientPhoneNumber}}
-        @label="recipient phone number"
+      <Form.FieldText
+        @fieldName="recipientPhoneNumber"
+        @label="Recipient Phone Number"
         @type="tel"
-        @onInputValue={{fn (mut this.invitation.recipientPhoneNumber)}}
-        @error={{this.recipientPhoneNumberError}}
-        class="mt-6"
       />
 
 
       <div class="mt-6">
-        <span class="text-xs">requested role</span>
+        <EuiFormLabel>Requested Role</EuiFormLabel>
+        
         <span class="mt-1 rounded h-8 flex items-center bg-gray-700 py-2 px-1">
-          <Ui::Button 
-            @icon="school" 
-            @label="teacher" 
-            @onClick={{fn (mut this.invitation.requestedRole) "teacher"}}
+          <span
+            {{on "click" (fn (mut this.invitation.requestedRole) "teacher")}}
+            role="button"
             class="flex-1 flex justify-center {{if this.invitation.isRequestingTeacherRole "text-green-300" "text-gray-400 hover:text-gray-200"}}" 
-          />
+          >
+            teacher
+          </span>
 
           <span class="h-full w-px bg-gray-400" />
           
-          <Ui::Button 
-            @icon="graduation-cap" 
-            @label="student" 
-            @onClick={{fn (mut this.invitation.requestedRole) "student"}}
+          <span
+            {{on "click" (fn (mut this.invitation.requestedRole) "student")}}
+            role="button"
             class="flex-1 flex justify-center {{if this.invitation.isRequestingTeacherRole "text-gray-400 hover:text-gray-200" "text-green-300"}}" 
-          />
+          >
+            student
+          </span>
         </span>
       </div>
 
       <div class="mt-8 flex justify-end">
-        <Ui::Button @onClick={{this.cancel}} @variant="secondary" @label="Cancel" @icon="window-close" />
-        <Ui::Button @icon="paper-plane" @variant="primary" @label="Send" @task={{this.save}} class="ml-4 px-8" />
+        <EuiButton @fill={{true}} {{on "click" this.cancel}}  @color="text" @iconType="cross" class="ml-2">
+          Cancel
+        </EuiButton>
+
+        <EuiButton 
+          @color="primary" 
+          @fill={{true}} 
+          @iconType="save" 
+          @isLoading={{this.save.isRunning}}
+          @type="submit"
+          @isDisabled={{changesetObj.isInvalid}}
+          class="ml-4"
+        >
+          Save
+        </EuiButton>
       </div>
-    </div>
+    </EuiChangesetForm>
   {{else}}
     <div class="flex flex-col">
       <div class="flex items-center justify-between">
@@ -76,8 +93,26 @@
 
       {{#if this.needsResponse}}  
         <div class="mt-8 flex items-center justify-end">
-          <Ui::Button @task={{this.reject}} @variant="danger" @label="Decline Invitation" @icon="window-close" />
-          <Ui::Button @task={{this.accept}} @variant="success" @label="Accept Invitation" @icon="check-square" class="ml-4" />
+          <EuiButton 
+            @fill={{true}} 
+            @color="danger" 
+            @iconType="trash" 
+            @isLoading={{this.reject.isRunning}}
+            {{on "click" this.reject.perform}}
+          >
+            Decline Invitation
+          </EuiButton>
+
+          <EuiButton 
+            @color="secondary" 
+            @fill={{true}} 
+            @iconType="check" 
+            @isLoading={{this.accept.isRunning}}
+            {{on "click" this.accept.perform}}
+            class="ml-4"
+          >
+            Accept Invitation
+          </EuiButton>
         </div>
       {{/if}}
 

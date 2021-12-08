@@ -14,6 +14,11 @@ module.exports = function (defaults) {
         node: {
           global: true,
         },
+				resolve: {
+					fallback: {
+						stream: false
+					}
+				}
       },
       exclude: [
         '@fortawesome/fontawesome-common-types',
@@ -44,6 +49,19 @@ module.exports = function (defaults) {
       filter: {
         plugins: [autoprefixer],
       },
+    },
+		svgJar: {
+      strategy: ['hbs'],
+      hbs: {
+        stripPath: false,
+      },
+      sourceDirs: [
+        'public/assets',
+        'node_modules/@elastic/eui/lib/components/icon',
+      ],
+    },
+		'@ember-eui/core': {
+      theme: 'dark', //light, dark, amsterdam_dark, amsterdam_light 
     },
   });
 
