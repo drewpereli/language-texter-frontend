@@ -2,6 +2,11 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { SessionService } from 'custom-types';
 import CurrentUserService from 'spanish-texter/services/current-user';
+import Language from 'spanish-texter/models/language';
+
+interface RouteModel {
+  languages: Language[];
+}
 
 export default class ApplicationRoute extends Route {
   @service public declare session: SessionService;
@@ -15,5 +20,11 @@ export default class ApplicationRoute extends Route {
         this.currentUser.loadIfNeeded();
       });
     }
+  }
+
+  public async model(): Promise<RouteModel> {
+    let languages = (await this.store.findAll('language')).toArray();
+
+    return { languages };
   }
 }
