@@ -8,30 +8,40 @@
       as |Form changesetObj|
     >
 
-      {{! #region spanish text }}
+      <Form.FieldSelect
+        @options={{this.languageOptions}}
+        @label="Language"
+        @fieldName="languageId"
+        @hasNoInitialSelection={{true}}
+        {{on "change" this.onSelectLanguage}}
+      />
+
+
+      {{! #region learning text }}
       <Form.FieldText
-        @fieldName="spanishText"
-        @label="Spanish"
-        {{on "input" (pick "target.value" (fn this.onInputChallengeText "spanish"))}}
+        @fieldName="learningLanguageText"
+        @label={{capitalize @challenge.language.name}}
+        @rowClasses="mt-6"
+        {{on "input" (pick "target.value" (fn this.onInputChallengeText "learning_language"))}}
       >
       </Form.FieldText>
 
       <div class="mt-2 text-sm flex items-center h-6">
         <span class="text-gray-400">SUGGESTION:</span>
 
-        {{#if this.spanishTranslationSuggestionRunning}}
+        {{#if this.learningLanguageTranslationSuggestionRunning}}
           <span class="w-8 ml-4">
             <EuiLoadingSpinner @size="m" />
           </span>
-        {{else if this.spanishTranslationSuggestion}}
-          <span class="ml-1 italic">"{{this.spanishTranslationSuggestion}}"</span>
+        {{else if this.learningLanguageTranslationSuggestion}}
+          <span class="ml-1 italic">"{{this.learningLanguageTranslationSuggestion}}"</span>
 
           <EuiButtonIcon
             @color="success"
             @iconType="arrowUp"
             @fill={{true}}
             class="ml-2"
-            {{on "click" (fn (mut @challenge.spanishText) this.spanishTranslationSuggestion)}}
+            {{on "click" (fn (mut @challenge.learningLanguageText) this.learningLanguageTranslationSuggestion)}}
           />
         {{else}}
           <span class="ml-2 text-gray-400">--</span>
@@ -39,40 +49,40 @@
       </div>
       {{! #endregion }}
 
-      {{! #region spanish note }}
+      {{! #region learning note }}
       <Form.FieldText
-        @fieldName="spanishTextNote"
-        @label="Spanish Note"
-        @helpText="Text to send with spanish text"
+        @fieldName="learningLanguageTextNote"
+        @label="{{capitalize @challenge.language.name}} Note"
+        @helpText="Text to send with {{capitalize @challenge.language.name}} text"
         @rowClasses="mt-6"
-        {{on "input" (pick "target.value" (fn (mut @challenge.spanishTextNote)))}}
+        {{on "input" (pick "target.value" (fn (mut @challenge.learningLanguageTextNote)))}}
       />
       {{! #endregion }}
 
-      {{! #region english text }}
+      {{! #region native text }}
       <Form.FieldText
-        @fieldName="englishText"
+        @fieldName="nativeLanguageText"
         @label="English"
-        {{on "input" (pick "target.value" (fn this.onInputChallengeText "english"))}}
+        {{on "input" (pick "target.value" (fn this.onInputChallengeText "native_language"))}}
       >
       </Form.FieldText>
 
       <div class="mt-2 text-sm flex items-center h-6">
         <span class="text-gray-400">SUGGESTION:</span>
 
-        {{#if this.englishTranslationSuggestionRunning}}
+        {{#if this.nativeLanguageTranslationSuggestionRunning}}
           <span class="w-8 ml-4">
             <EuiLoadingSpinner @size="m" />
           </span>
-        {{else if this.englishTranslationSuggestion}}
-          <span class="ml-1 italic">"{{this.englishTranslationSuggestion}}"</span>
+        {{else if this.nativeLanguageTranslationSuggestion}}
+          <span class="ml-1 italic">"{{this.nativeLanguageTranslationSuggestion}}"</span>
 
           <EuiButtonIcon
             @color="success"
             @iconType="arrowUp"
             @fill={{true}}
             class="ml-2"
-            {{on "click" (fn (mut @challenge.englishText) this.englishTranslationSuggestion)}}
+            {{on "click" (fn (mut @challenge.nativeLanguageText) this.nativeLanguageTranslationSuggestion)}}
           />
         {{else}}
           <span class="ml-2 text-gray-400">--</span>
@@ -80,13 +90,13 @@
       </div>
       {{! #endregion }}
 
-      {{! #region english note }}
+      {{! #region native note }}
       <Form.FieldText
-        @fieldName="englishTextNote"
+        @fieldName="nativeLanguageTextNote"
         @label="English Note"
         @helpText="Text to send with english text"
         @rowClasses="mt-6"
-        {{on "input" (pick "target.value" (fn (mut @challenge.englishTextNote)))}}
+        {{on "input" (pick "target.value" (fn (mut @challenge.nativeLanguageTextNote)))}}
       />
       {{! #endregion }}
       
@@ -126,14 +136,14 @@
 
     </EuiChangesetForm>
   {{else}}
-    {{! #region spanish text and view-progress button }}
+    {{! #region learning text and view-progress button }}
     <div class="flex items-center justify-between">
       <div>
-        <span class="font-bold text-gray-400">Spanish:</span>
-        <span class="ml-1">"{{@challenge.spanishText}}"</span>
+        <span class="font-bold text-gray-400">{{capitalize @challenge.language.name}}:</span>
+        <span class="ml-1">"{{@challenge.learningLanguageText}}"</span>
 
-        {{#if @challenge.spanishTextNote}}
-          <span class="ml-1 text-gray-400">(Note: {{@challenge.spanishTextNote}})</span>
+        {{#if @challenge.learningLanguageTextNote}}
+          <span class="ml-1 text-gray-400">(Note: {{@challenge.learningLanguageTextNote}})</span>
         {{/if}}
       </div>
 
@@ -143,13 +153,13 @@
     </div>
     {{! #endregion }}
 
-    {{! #region english }}
+    {{! #region native }}
     <div class="mt-6">
       <span class="font-bold text-gray-400">English:</span>
-      <span class="ml-1">"{{@challenge.englishText}}"</span>
+      <span class="ml-1">"{{@challenge.nativeLanguageText}}"</span>
 
-      {{#if @challenge.englishTextNote}}
-        <span class="ml-1 text-gray-400">(Note: {{@challenge.englishTextNote}})</span>
+      {{#if @challenge.nativeLanguageTextNote}}
+        <span class="ml-1 text-gray-400">(Note: {{@challenge.nativeLanguageTextNote}})</span>
       {{/if}}
     </div>
     {{! #endregion }}

@@ -32,8 +32,6 @@ export interface EuiToasterService {
 
 export type RouteTransition = ReturnType<RouterService['transitionTo']> & { targetName: string };
 
-export type Language = 'spanish' | 'english';
-
 export interface AdapterErrorEntry {
   detail: string;
   source: { pointer: string };
