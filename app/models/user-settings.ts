@@ -1,4 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
+import Language from './language';
 import UserModel from './user';
 
 export const TIMEZONES = <const>[
@@ -310,6 +311,8 @@ export type Timezone = typeof TIMEZONES[number];
 
 export default class UserSettingsModel extends Model {
   @belongsTo('user', { async: false }) declare user: UserModel;
+
+  @belongsTo('language', { async: false }) declare defaultChallengeLanguage: Language;
 
   @attr('string') declare timezone: Timezone;
 }
