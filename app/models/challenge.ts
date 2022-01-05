@@ -43,10 +43,12 @@ export default class ChallengeModel extends Model {
     this.languageId = language.id;
   }
 
-  Validations: ValidationsObject = {
-    languageId: validatePresence({ presence: true, message: "Language can't be blank" }),
-    learningLanguageText: validatePresence(true),
-    nativeLanguageText: validatePresence(true),
-    requiredScore: validateNumber({ allowBlank: false, gt: 0 }),
-  };
+  get Validations(): ValidationsObject {
+    return {
+      languageId: validatePresence({ presence: true, message: "Language can't be blank" }),
+      learningLanguageText: validatePresence({ presence: true, message: `${this.language.name} text can't be blank` }),
+      nativeLanguageText: validatePresence({ presence: true, message: "English text can't be blank" }),
+      requiredScore: validateNumber({ allowBlank: false, gt: 0 }),
+    };
+  }
 }
