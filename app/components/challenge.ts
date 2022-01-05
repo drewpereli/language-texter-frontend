@@ -157,17 +157,6 @@ export default class ChallengeComponent extends Component<Args> {
   }
 
   @action
-  onSelectLanguage(e: Event): void {
-    let languageId = (e.target as HTMLSelectElement).value;
-
-    let language = this.store.peekRecord('language', languageId);
-
-    console.log(language);
-
-    this.args.challenge.language = language;
-  }
-
-  @action
   onInputChallengeText(languageType: LanguageType, text: string): void {
     if (languageType === LanguageType.NativeLanguage) {
       this.args.challenge.nativeLanguageText = text;

@@ -12,8 +12,7 @@
         @options={{this.languageOptions}}
         @label="Language"
         @fieldName="languageId"
-        @hasNoInitialSelection={{true}}
-        {{on "change" this.onSelectLanguage}}
+        {{on "change" (pick "target.value" (fn (mut @challenge.languageId)))}}
       />
 
 
