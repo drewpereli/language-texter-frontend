@@ -1,39 +1,56 @@
 <div class="p-8 flex justify-center">
-  <div class="flex flex-col w-full max-w-xl">
-    <EuiChangesetForm 
-      @onSubmit={{perform this.onSubmit}}
-      @changeset={{changeset this this.Validations}}
-      @runExecuteInsteadOfSave={{true}}
-      @fullWidth={{true}}
-      as |Form changesetObj|
-    >
-      <Form.FieldText @fieldName="username" @label="Username" />
-      <Form.FieldText @fieldName="phoneNumber" @label="Phone Number" @type="tel" />
-      <Form.FieldPassword @fieldName="password" @label="Password" />
-      <Form.FieldPassword @fieldName="passwordConfirmation" @label="Password Confirmation" />
-
-      <Form.FieldSelect
-        @value={{this.defaultChallengeLanguageId}}
-        @options={{this.languageOptions}}
-        @fieldName="defaultChallengeLanguageId"
-        @label="What language would you like to learn?"
-      />
-
-      <Form.FieldSelect
-        @value={{this.timezone}}
-        @options={{this.timezoneOptions}}
-        @fieldName="timezone"
-        @label="What timezone are you in?"
-      />
-
-      <EuiButton
-        @fill={{true}}
-        @isLoading={{this.onSubmit.isRunning}}
-        @isDisabled={{changesetObj.isInvalid}}
-        @type="submit"
+  <div class="flex flex-col w-full max-w-xl space-y-8">
+    {{#if this.signUpComplete}}
+      <EuiCallOut
+        @iconType="cheer"
+        @title="Success!"
+        @heading="h1"
+        @color="success"
+        @size="l"
       >
-        Sign Up
-      </EuiButton>
-    </EuiChangesetForm>
+        <:body>You'll receive a text within the next few minutes with a link to confirm your account.</:body>
+      </EuiCallOut>
+    {{else}}      
+      <EuiChangesetForm 
+        @onSubmit={{perform this.onSubmit}}
+        @changeset={{changeset this this.Validations}}
+        @runExecuteInsteadOfSave={{true}}
+        @fullWidth={{true}}
+        as |Form changesetObj|
+      >
+        <Form.FieldText @fieldName="username" @label="Username" />
+        <Form.FieldText @fieldName="phoneNumber" @label="Phone Number" @type="tel" />
+        <Form.FieldPassword @fieldName="password" @label="Password" />
+        <Form.FieldPassword @fieldName="passwordConfirmation" @label="Password Confirmation" />
+
+        <Form.FieldSelect
+          @value={{this.defaultChallengeLanguageId}}
+          @options={{this.languageOptions}}
+          @fieldName="defaultChallengeLanguageId"
+          @label="What language would you like to learn?"
+        />
+
+        <Form.FieldSelect
+          @value={{this.timezone}}
+          @options={{this.timezoneOptions}}
+          @fieldName="timezone"
+          @label="What timezone are you in?"
+        />
+
+        <EuiButton
+          @fill={{true}}
+          @isLoading={{this.onSubmit.isRunning}}
+          @isDisabled={{changesetObj.isInvalid}}
+          @type="submit"
+        >
+          Sign Up
+        </EuiButton>
+      </EuiChangesetForm>
+
+      {{#if this.onSubmit.isRunning}}
+        <EuiProgress @color="primary" @size="s" class="mt-8" />
+      {{/if}}
+    {{/if}}
+    
   </div>
 </div>

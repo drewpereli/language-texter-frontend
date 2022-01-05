@@ -35,6 +35,8 @@ export default class SignUpController extends Controller {
 
   Validations = Validations;
 
+  @tracked signUpComplete = false;
+
   get languageOptions(): { value: string; text: string }[] {
     return this.model.languages.map((language: Language) => {
       return {
@@ -75,10 +77,7 @@ export default class SignUpController extends Controller {
       });
 
       if (response.ok) {
-        this.euiToaster.show({
-          title: 'Sign up successful',
-          body: "You'll receive a text within the next few minutes with a link to confirm your account.",
-        });
+        this.signUpComplete = true;
       } else if (response.status === 401) {
         let body = yield response.json();
 
