@@ -19,7 +19,7 @@
       {{! #region learning text }}
       <Form.FieldText
         @fieldName="learningLanguageText"
-        @label={{capitalize @challenge.language.name}}
+        @label="{{capitalize @challenge.language.name}} Text"
         @rowClasses="mt-6"
         {{on "input" (pick "target.value" (fn this.onInputChallengeText "learning_language"))}}
       >
@@ -61,7 +61,7 @@
       {{! #region native text }}
       <Form.FieldText
         @fieldName="nativeLanguageText"
-        @label="English"
+        @label="English Text"
         {{on "input" (pick "target.value" (fn this.onInputChallengeText "native_language"))}}
       >
       </Form.FieldText>
