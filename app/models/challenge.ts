@@ -16,7 +16,7 @@ export default class ChallengeModel extends Model {
   @attr('string', { defaultValue: 'queued' }) declare status: string;
   @attr('date', { defaultValue: () => new Date() }) declare createdAt: Date;
 
-  @attr('string') declare languageId?: string; // Should only be undefined if new
+  @attr('string') declare languageId: string;
 
   @belongsTo('user', { async: false }) declare creator?: UserModel; // Should only be undefined if new
   @belongsTo('user', { async: false }) declare student?: UserModel; // Should only be undefined if new
@@ -35,16 +35,12 @@ export default class ChallengeModel extends Model {
     return this.status === 'complete';
   }
 
-  get language(): Language | null | undefined {
-    if (!this.languageId) {
-      return null;
-    }
-
+  get language(): Language {
     return this.store.peekRecord('language', this.languageId);
   }
 
-  set language(language: Language | null | undefined) {
-    this.languageId = language?.id;
+  set language(language: Language) {
+    this.languageId = language.id;
   }
 
   Validations: ValidationsObject = {
