@@ -10,32 +10,58 @@ import ENV from 'spanish-texter/config/environment';
 import { capitalize } from '@ember/string';
 import { validatePresence, validateFormat, validateConfirmation } from 'ember-changeset-validations/validators';
 import validatePasswordStrength from 'spanish-texter/validators/validate-password-strength';
+import Language from 'spanish-texter/models/language';
+import StorageService from '@ember-data/store';
+import { Timezone, TIMEZONES } from 'spanish-texter/models/user-settings';
+import { SignUpRouteModel } from 'spanish-texter/routes/sign-up';
 
 const Validations: ValidationsObject = {
   username: validatePresence(true),
   phoneNumber: validateFormat({ allowBlank: false, type: 'phone' }),
   password: validatePasswordStrength(),
   passwordConfirmation: validateConfirmation({ on: 'password', allowBlank: false }),
+  defaultChallengeLanguageId: validatePresence(true),
+  timezone: validatePresence(true),
 };
-export default class SignUp extends Controller {
+export default class SignUpController extends Controller {
+  declare model: SignUpRouteModel;
+
   @tracked protected username = '';
   @tracked protected phoneNumber = '';
   @tracked protected password = '';
   @tracked protected passwordConfirmation = '';
+  @tracked declare timezone: Timezone; // Set in route
+  @tracked declare defaultChallengeLanguageId: string; // Set in route
 
   Validations = Validations;
+
+  get languageOptions(): { value: string; text: string }[] {
+    return this.model.languages.map((language: Language) => {
+      return {
+        value: language.id,
+        text: language.name,
+      };
+    });
+  }
+
+  get timezoneOptions(): { value: string; text: string }[] {
+    return TIMEZONES.map((timezone) => {
+      return { value: timezone, text: timezone };
+    });
+  }
 
   @dropTask
   protected *onSubmit(): TaskGenerator<void> {
     try {
-      let { username, phoneNumber, password, passwordConfirmation } = this;
+      let { username, phoneNumber, password, passwordConfirmation, defaultChallengeLanguageId, timezone } = this;
 
       let user = {
         username,
         phone_number: phoneNumber,
         password,
         password_confirmation: passwordConfirmation,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        timezone,
+        default_challenge_language_id: defaultChallengeLanguageId,
       };
 
       let url = `${ENV.APP.apiHost}/users`;
@@ -86,4 +112,5 @@ export default class SignUp extends Controller {
 
   @service private declare session: SessionService;
   @service private declare euiToaster: EuiToasterService;
+  @service declare store: StorageService;
 }

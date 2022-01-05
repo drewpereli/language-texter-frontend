@@ -12,6 +12,20 @@
       <Form.FieldPassword @fieldName="password" @label="Password" />
       <Form.FieldPassword @fieldName="passwordConfirmation" @label="Password Confirmation" />
 
+      <Form.FieldSelect
+        @value={{this.defaultChallengeLanguageId}}
+        @options={{this.languageOptions}}
+        @fieldName="defaultChallengeLanguageId"
+        @label="What language would you like to learn?"
+      />
+
+      <Form.FieldSelect
+        @value={{this.timezone}}
+        @options={{this.timezoneOptions}}
+        @fieldName="timezone"
+        @label="What timezone are you in?"
+      />
+
       <EuiButton
         @fill={{true}}
         @isLoading={{this.onSubmit.running}}
