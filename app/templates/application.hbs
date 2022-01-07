@@ -1,26 +1,30 @@
 {{page-title "SpanishTexter"}}
 
 <div class="h-screen w-screen">
-  <nav class="flex items-center justify-end py-4 px-8 bg-white bg-opacity-10 text-gray-200">
+  <nav class="flex items-center justify-end py-4 px-8 bg-white bg-opacity-10 text-gray-200 space-x-8">
     {{#if this.session.isAuthenticated}}
       <LinkTo @route="authenticated.home" class="hover:underline">
         Home
       </LinkTo>
 
-      <LinkTo @route="authenticated.invitations" class="ml-8 hover:underline">
+      <LinkTo @route="authenticated.invitations" class="hover:underline">
         Invite Teachers/Students
       </LinkTo>
 
-      <LinkTo @route="authenticated.change-password" class="ml-8 hover:underline">
+      <LinkTo @route="authenticated.settings" class="hover:underline">
+        Settings
+      </LinkTo>
+
+      <LinkTo @route="authenticated.change-password" class="hover:underline">
         Change Password
       </LinkTo>
     {{else}}
-      <LinkTo @route="sign-up" class="ml-8 hover:underline">
+      <LinkTo @route="sign-up" class="hover:underline">
         Sign Up
       </LinkTo>
     {{/if}}
 
-    <LinkTo @route={{if this.session.isAuthenticated "authenticated.logout" "login"}} class="ml-8 first:ml-0 hover:underline">
+    <LinkTo @route={{if this.session.isAuthenticated "authenticated.logout" "login"}} class="hover:underline">
       {{#if this.session.isAuthenticated}}
         Log Out
       {{else}}

@@ -1,0 +1,55 @@
+<div class="p-8 flex justify-center">
+  <div class="flex flex-col w-full max-w-xl space-y-8">
+    <EuiChangesetForm 
+      @onSubmit={{perform this.onSubmit}}
+      @changeset={{changeset @model.userSettings @model.userSettings.Validations}}
+      @runExecuteInsteadOfSave={{true}}
+      @fullWidth={{true}}
+      as |Form changesetObj|
+    >
+      <Form.FieldSelect
+        @options={{this.languageOptions}}
+        @fieldName="defaultChallengeLanguageId"
+        @label="Current Language Focus"
+      />
+
+      <Form.FieldSelect
+        @options={{this.timezoneOptions}}
+        @fieldName="timezone"
+        @label="Timezone"
+      />
+
+      <Form.FieldSelect
+        @value={{@model.userSettings.earliestTextTime}}
+        @options={{this.textTimeOptions}}
+        @fieldName="earliestTextTime"
+        @label="Earliest time you'd like to receive texts"
+      />
+
+      <Form.FieldSelect
+        @value={{@model.userSettings.latestTextTime}}
+        @options={{this.textTimeOptions}}
+        @fieldName="latestTextTime"
+        @label="Latest time you'd like to receive texts"
+      />
+
+      <Form.FieldSelect
+        @value={{@model.userSettings.reminderFrequency}}
+        @options={{this.reminderFrequencyOptions}}
+        @fieldName="reminderFrequency"
+        @label="Reminder frequency for unanswered text challenge"
+      />
+
+      <EuiButton
+        @fill={{true}}
+        @isLoading={{this.onSubmit.isRunning}}
+        @isDisabled={{or changesetObj.isInvalid}}
+        @type="submit"
+      >
+        Save Settings
+      </EuiButton>
+
+
+    </EuiChangesetForm>
+  </div>
+</div>
