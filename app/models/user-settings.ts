@@ -311,11 +311,19 @@ export const TIMEZONES = <const>[
 
 export type Timezone = typeof TIMEZONES[number];
 
+export enum QuestionFrequency {
+  Hourly = 'hourly_questions',
+  EveryTwoHours = 'questions_every_two_hours',
+  EveryFourHours = 'questions_every_four_hours',
+  EveryEightHours = 'questions_every_eight_hours',
+  Daily = 'daily_questions',
+}
+
 export enum ReminderFrequency {
   NoReminders = 'no_reminders',
-  Hourly = 'hourly',
-  EveryFourHours = 'every_four_hours',
-  Daily = 'daily',
+  Hourly = 'hourly_reminders',
+  EveryFourHours = 'reminders_every_four_hours',
+  Daily = 'daily_reminders',
 }
 
 export const TEXT_TIMES = <const>[
@@ -378,6 +386,7 @@ export default class UserSettingsModel extends Model {
 
   @attr('string') declare earliestTextTime: typeof TEXT_TIMES[number];
   @attr('string') declare latestTextTime: typeof TEXT_TIMES[number];
+  @attr('string') declare questionFrequency: QuestionFrequency;
   @attr('string') declare reminderFrequency: ReminderFrequency;
 
   get defaultChallengeLanguageId(): string {

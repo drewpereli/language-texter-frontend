@@ -34,10 +34,17 @@
       />
 
       <Form.FieldSelect
+        @value={{@model.userSettings.questionFrequency}}
+        @options={{this.questionFrequencyOptions}}
+        @fieldName="questionFrequency"
+        @label="Question Frequency"
+      />
+
+      <Form.FieldSelect
         @value={{@model.userSettings.reminderFrequency}}
         @options={{this.reminderFrequencyOptions}}
         @fieldName="reminderFrequency"
-        @label="Reminder frequency for unanswered text challenge"
+        @label="Reminder frequency for unanswered questions"
       />
 
       <EuiButton

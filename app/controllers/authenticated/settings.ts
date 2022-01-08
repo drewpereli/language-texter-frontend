@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { dropTask, TaskGenerator } from 'ember-concurrency';
-import { ReminderFrequency, TEXT_TIMES, TIMEZONES } from 'spanish-texter/models/user-settings';
+import { QuestionFrequency, ReminderFrequency, TEXT_TIMES, TIMEZONES } from 'spanish-texter/models/user-settings';
 import { SettingsRouteModel } from 'spanish-texter/routes/authenticated/settings';
 import { inject as service } from '@ember/service';
 import { EuiToasterService } from 'custom-types';
@@ -80,6 +80,16 @@ export default class AuthenticatedSettings extends Controller {
     return TEXT_TIMES.map((time) => {
       return { value: time, text: TEXT_TIME_LABELS[time] };
     });
+  }
+
+  get questionFrequencyOptions(): { value: string; text: string }[] {
+    return [
+      { value: QuestionFrequency.Hourly, text: 'Hourly' },
+      { value: QuestionFrequency.EveryTwoHours, text: 'Every two hours' },
+      { value: QuestionFrequency.EveryFourHours, text: 'Every four hours' },
+      { value: QuestionFrequency.EveryEightHours, text: 'Every eight hours' },
+      { value: QuestionFrequency.Daily, text: 'Daily' },
+    ];
   }
 
   get reminderFrequencyOptions(): { value: string; text: string }[] {
