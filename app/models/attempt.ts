@@ -1,16 +1,22 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
-import { Language } from 'custom-types';
 import ChallengeModel from './challenge';
+
+export enum LanguageType {
+  LearningLanguage = 'learning_language',
+  NativeLanguage = 'native_language',
+}
 
 export default class AttemptModel extends Model {
   @attr('string') declare text: string;
-  @attr('string') declare queryLanguage: Language;
+  @attr('string') declare questionLanguage: LanguageType;
   @attr('boolean') declare isCorrect: boolean;
   @attr('date') declare createdAt: Date;
 
   @belongsTo('challenge', { async: false }) declare challenge: ChallengeModel;
 
-  get attemptLanguage(): Language {
-    return this.queryLanguage === 'spanish' ? 'english' : 'spanish';
+  get attemptLanguage(): LanguageType {
+    return this.questionLanguage === LanguageType.LearningLanguage
+      ? LanguageType.NativeLanguage
+      : LanguageType.LearningLanguage;
   }
 }

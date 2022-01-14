@@ -1,8 +1,8 @@
 {
-  "name": "spanish-texter",
+  "name": "language-texter",
   "version": "0.0.0",
   "private": true,
-  "description": "Small description for spanish-texter goes here",
+  "description": "Small description for language-texter goes here",
   "repository": "",
   "license": "MIT",
   "author": "",
@@ -79,6 +79,7 @@
     "ember-cli-inject-live-reload": "^2.0.2",
     "ember-cli-postcss": "^7.0.2",
     "ember-cli-sri": "^2.1.1",
+    "ember-cli-string-helpers": "^6.1.0",
     "ember-cli-terser": "^4.0.2",
     "ember-cli-typescript": "^4.2.1",
     "ember-cli-typescript-blueprints": "^3.0.0",

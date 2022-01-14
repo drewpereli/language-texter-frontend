@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import fetch from 'fetch';
-import ENV from 'spanish-texter/config/environment';
+import ENV from 'language-texter/config/environment';
 import { inject as service } from '@ember/service';
 import { EuiToasterService } from 'custom-types';
 import { SessionService } from 'custom-types';

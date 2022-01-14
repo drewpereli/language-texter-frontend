@@ -4,13 +4,16 @@ import { timeout } from 'ember-concurrency';
 import { dropTask, restartableTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import GoogleTranslateClient from 'spanish-texter/utils/google-translate-client';
-import ChallengeModel from 'spanish-texter/models/challenge';
+import GoogleTranslateClient from 'language-texter/utils/google-translate-client';
+import ChallengeModel from 'language-texter/models/challenge';
 import { TaskGenerator } from 'ember-concurrency';
-import { EuiToasterService, Language } from 'custom-types';
+import { EuiToasterService } from 'custom-types';
 import { taskFor } from 'ember-concurrency-ts';
-import CurrentUserService from 'spanish-texter/services/current-user';
-import UserModel from 'spanish-texter/models/user';
+import CurrentUserService from 'language-texter/services/current-user';
+import UserModel from 'language-texter/models/user';
+import { LanguageType } from 'language-texter/models/attempt';
+import StorageService from '@ember-data/store';
+import Language from 'language-texter/models/language';
 interface Args {
   challenge: ChallengeModel;
 }
@@ -18,17 +21,18 @@ interface Args {
 export default class ChallengeComponent extends Component<Args> {
   @service declare euiToaster: EuiToasterService;
   @service declare currentUser: CurrentUserService;
+  @service declare store: StorageService;
 
   googleTranslateClient: GoogleTranslateClient = new GoogleTranslateClient();
 
   @tracked isEditing = false;
   @tracked showDeleteConfirmation = false;
 
-  @tracked englishTranslationSuggestion: string | undefined;
-  @tracked spanishTranslationSuggestion: string | undefined;
+  @tracked nativeLanguageTranslationSuggestion: string | undefined;
+  @tracked learningLanguageTranslationSuggestion: string | undefined;
 
-  @tracked englishTranslationSuggestionRunning = false;
-  @tracked spanishTranslationSuggestionRunning = false;
+  @tracked nativeLanguageTranslationSuggestionRunning = false;
+  @tracked learningLanguageTranslationSuggestionRunning = false;
 
   get isNewOrEditing(): boolean {
     return !!this.args.challenge.isNew || this.isEditing;
@@ -75,6 +79,15 @@ export default class ChallengeComponent extends Component<Args> {
     });
 
     return [{ label: 'You', value: user }, ...studentOptions];
+  }
+
+  get languageOptions(): { value: string; text: string }[] {
+    return this.store.peekAll('language').map((language: Language) => {
+      return {
+        value: language.id,
+        text: language.name,
+      };
+    });
   }
 
   @dropTask
@@ -144,53 +157,61 @@ export default class ChallengeComponent extends Component<Args> {
   }
 
   @action
-  onInputChallengeText(language: Language, text: string): void {
-    if (language === 'english') {
-      this.args.challenge.englishText = text;
+  onInputChallengeText(languageType: LanguageType, text: string): void {
+    if (languageType === LanguageType.NativeLanguage) {
+      this.args.challenge.nativeLanguageText = text;
     } else {
-      this.args.challenge.spanishText = text;
+      this.args.challenge.learningLanguageText = text;
     }
 
-    if (language === 'english') {
-      taskFor(this.setSpanishSuggestion).perform(text);
+    if (languageType === LanguageType.NativeLanguage) {
+      taskFor(this.setLearningSuggestion).perform(text);
     } else {
-      taskFor(this.setEnglishSuggestion).perform(text);
+      taskFor(this.setNativeSuggestion).perform(text);
     }
   }
 
   @restartableTask
-  *setSpanishSuggestion(text: string): TaskGenerator<void> {
-    if (!text) {
-      this.spanishTranslationSuggestion = undefined;
-      this.spanishTranslationSuggestionRunning = false;
+  private *setLearningSuggestion(text: string): TaskGenerator<void> {
+    if (!text || !this.args.challenge.language) {
+      this.learningLanguageTranslationSuggestion = undefined;
+      this.learningLanguageTranslationSuggestionRunning = false;
       return;
     }
 
-    this.spanishTranslationSuggestionRunning = true;
+    this.learningLanguageTranslationSuggestionRunning = true;
 
     yield timeout(500); // 500 ms debounce
 
-    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'english', to: 'spanish' });
+    let suggestion = yield this.googleTranslateClient.translate({
+      text,
+      from: 'english',
+      to: this.args.challenge.language.code,
+    });
 
-    this.spanishTranslationSuggestion = suggestion;
-    this.spanishTranslationSuggestionRunning = false;
+    this.learningLanguageTranslationSuggestion = suggestion;
+    this.learningLanguageTranslationSuggestionRunning = false;
   }
 
   @restartableTask
-  *setEnglishSuggestion(text: string): TaskGenerator<void> {
-    if (!text) {
-      this.englishTranslationSuggestion = undefined;
-      this.englishTranslationSuggestionRunning = false;
+  private *setNativeSuggestion(text: string): TaskGenerator<void> {
+    if (!text || !this.args.challenge.language) {
+      this.nativeLanguageTranslationSuggestion = undefined;
+      this.nativeLanguageTranslationSuggestionRunning = false;
       return;
     }
 
-    this.englishTranslationSuggestionRunning = true;
+    this.nativeLanguageTranslationSuggestionRunning = true;
 
     yield timeout(500); // 500 ms debounce
 
-    let suggestion = yield this.googleTranslateClient.translate({ text, from: 'spanish', to: 'english' });
+    let suggestion = yield this.googleTranslateClient.translate({
+      text,
+      from: this.args.challenge.language.code,
+      to: 'english',
+    });
 
-    this.englishTranslationSuggestion = suggestion;
-    this.englishTranslationSuggestionRunning = false;
+    this.nativeLanguageTranslationSuggestion = suggestion;
+    this.nativeLanguageTranslationSuggestionRunning = false;
   }
 }

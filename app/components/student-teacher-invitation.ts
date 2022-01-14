@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
-import StudentTeacherInvitationModel from 'spanish-texter/models/student-teacher-invitation';
+import StudentTeacherInvitationModel from 'language-texter/models/student-teacher-invitation';
 import { TaskGenerator } from 'ember-concurrency';
 import { dropTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import { EuiToasterService } from 'custom-types';
 import moment from 'moment';
 import { action } from '@ember/object';
-import { isAdapterError } from 'spanish-texter/utils/type-utils';
+import { isAdapterError } from 'language-texter/utils/type-utils';
 
 interface Args {
   studentTeacherInvitation: StudentTeacherInvitationModel;

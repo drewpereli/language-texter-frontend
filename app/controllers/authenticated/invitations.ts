@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import StudentTeacherInvitationModel from 'spanish-texter/models/student-teacher-invitation';
+import StudentTeacherInvitationModel from 'language-texter/models/student-teacher-invitation';
 import { inject as service } from '@ember/service';
 import { SessionService } from 'custom-types';
 import EmberArray from '@ember/array';

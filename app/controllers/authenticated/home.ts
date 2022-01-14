@@ -3,10 +3,12 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import StoreService from '@ember-data/store';
 import EmberArray from '@ember/array';
-import ChallengeModel from 'spanish-texter/models/challenge';
+import ChallengeModel from 'language-texter/models/challenge';
+import CurrentUserService from 'language-texter/services/current-user';
 
 export default class AuthenticatedHomeController extends Controller {
   @service declare store: StoreService;
+  @service declare currentUser: CurrentUserService;
 
   challengeLists = [
     { status: 'queued', startOpen: false },
@@ -20,6 +22,8 @@ export default class AuthenticatedHomeController extends Controller {
 
   @action
   createNewChallenge(): void {
-    this.store.createRecord('challenge');
+    this.store.createRecord('challenge', {
+      languageId: this.currentUser.user?.userSettings.defaultChallengeLanguage.id,
+    });
   }
 }

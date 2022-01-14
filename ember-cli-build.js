@@ -14,11 +14,11 @@ module.exports = function (defaults) {
         node: {
           global: true,
         },
-				resolve: {
-					fallback: {
-						stream: false
-					}
-				}
+        resolve: {
+          fallback: {
+            stream: false,
+          },
+        },
       },
       exclude: [
         '@fortawesome/fontawesome-common-types',
@@ -50,18 +50,18 @@ module.exports = function (defaults) {
         plugins: [autoprefixer],
       },
     },
-		svgJar: {
+    svgJar: {
       strategy: ['hbs'],
       hbs: {
         stripPath: false,
       },
-      sourceDirs: [
-        'public/assets',
-        'node_modules/@elastic/eui/lib/components/icon',
-      ],
+      sourceDirs: ['public/assets', 'node_modules/@elastic/eui/lib/components/icon'],
     },
-		'@ember-eui/core': {
-      theme: 'dark', //light, dark, amsterdam_dark, amsterdam_light 
+    '@ember-eui/core': {
+      theme: 'dark', //light, dark, amsterdam_dark, amsterdam_light
+    },
+    'ember-cli-string-helpers': {
+      only: ['capitalize'],
     },
   });
 

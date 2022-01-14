@@ -1,5 +1,5 @@
 import EmberRouter from '@ember/routing/router';
-import config from 'spanish-texter/config/environment';
+import config from 'language-texter/config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
@@ -15,6 +15,7 @@ Router.map(function () {
     this.route('change-password');
     this.route('challenge', { path: '/challenges/:challenge_id' });
     this.route('invitations');
+    this.route('settings');
   });
   this.route('sign-up');
   this.route('confirm-user');

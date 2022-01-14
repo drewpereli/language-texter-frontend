@@ -2,7 +2,7 @@ import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 import EmberArray from '@ember/array';
 import ChallengeModel from './challenge';
 import { inject as service } from '@ember/service';
-import CurrentUserService from 'spanish-texter/services/current-user';
+import CurrentUserService from 'language-texter/services/current-user';
 import UserSettingsModel from './user-settings';
 
 export default class UserModel extends Model {

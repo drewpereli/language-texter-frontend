@@ -1,24 +1,19 @@
-import ENV from 'spanish-texter/config/environment';
+import ENV from 'language-texter/config/environment';
 import fetch from 'fetch';
-import { Language } from 'custom-types';
-
-const LANGUAGE_CODES: Record<Language, string> = {
-  english: 'en',
-  spanish: 'es',
-};
+import Language from 'language-texter/models/language';
 
 interface TranslateNamedParams {
   text: string;
-  from: Language;
-  to: Language;
+  from: Language['code'];
+  to: Language['code'];
 }
 
 export default class GoogleTranslateClient {
   async translate({ text, from, to }: TranslateNamedParams): Promise<string> {
     let requestBody = {
       q: text,
-      source: LANGUAGE_CODES[from],
-      target: LANGUAGE_CODES[to],
+      source: from,
+      target: to,
       format: 'text',
     };
 
