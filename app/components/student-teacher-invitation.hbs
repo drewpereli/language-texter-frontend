@@ -1,0 +1,122 @@
+<div class="p-4 bg-gray-900 text-gray-200 rounded shadow" ...attributes>
+
+  {{#if this.invitation.isNew}}
+    <EuiChangesetForm
+      @onSubmit={{perform this.save}}
+      @changeset={{changeset this.invitation this.invitation.Validations}} 
+      @runExecuteInsteadOfSave={{true}}
+      @fullWidth={{true}}
+      as |Form changesetObj|
+    >
+      <Form.FieldText
+        @fieldName="recipientName"
+        @label="Recipient Name"
+      />
+      
+      <Form.FieldText
+        @fieldName="recipientPhoneNumber"
+        @label="Recipient Phone Number"
+        @type="tel"
+      />
+
+
+      <div class="mt-6">
+        <EuiFormLabel>Requested Role</EuiFormLabel>
+        
+        <span class="mt-1 rounded h-8 flex items-center bg-gray-700 py-2 px-1">
+          <span
+            {{on "click" (fn (mut this.invitation.requestedRole) "teacher")}}
+            role="button"
+            class="flex-1 flex justify-center {{if this.invitation.isRequestingTeacherRole "text-green-300" "text-gray-400 hover:text-gray-200"}}" 
+          >
+            teacher
+          </span>
+
+          <span class="h-full w-px bg-gray-400" />
+          
+          <span
+            {{on "click" (fn (mut this.invitation.requestedRole) "student")}}
+            role="button"
+            class="flex-1 flex justify-center {{if this.invitation.isRequestingTeacherRole "text-gray-400 hover:text-gray-200" "text-green-300"}}" 
+          >
+            student
+          </span>
+        </span>
+      </div>
+
+      <div class="mt-8 flex justify-end">
+        <EuiButton @fill={{true}} {{on "click" this.cancel}}  @color="text" @iconType="cross" class="ml-2">
+          Cancel
+        </EuiButton>
+
+        <EuiButton 
+          @color="primary" 
+          @fill={{true}} 
+          @iconType="save" 
+          @isLoading={{this.save.isRunning}}
+          @type="submit"
+          @isDisabled={{changesetObj.isInvalid}}
+          class="ml-4"
+        >
+          Save
+        </EuiButton>
+      </div>
+    </EuiChangesetForm>
+  {{else}}
+    <div class="flex flex-col">
+      <div class="flex items-center justify-between">
+        <div class="text-gray-400">
+          <FaIcon @icon={{if this.invitation.wasSentByCurrentUser "paper-plane" "inbox"}} />
+          <span class="ml-2">{{if this.invitation.wasSentByCurrentUser "Sent by you" "Sent to you"}} {{this.sentTimeAgo}}</span>
+        </div>
+
+        {{#if this.invitation.isComplete}}  
+          <div class="flex items-center ml-4">
+            {{#if this.invitation.wasAccepted}}
+              <span class="text-gray-400">Accepted</span>
+              <FaIcon @icon="check" class="ml-2 text-green-500" />
+            {{else}}
+              <span class="text-gray-400">Rejected</span>
+              <FaIcon @icon="check" class="ml-2" />
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+
+      <div class="mt-6 text-gray-200">
+        {{#if this.invitation.wasSentByCurrentUser}}
+          You invited <span class="text-gray-50 font-medium">{{this.invitation.recipientName}}</span> to be your {{this.invitation.requestedRole}}.
+        {{else}}
+          <span class="text-gray-50 font-medium">{{this.invitation.creatorUsername}}</span> {{if this.invitation.isComplete "invited" "is inviting"}} you to be their {{this.invitation.requestedRole}}{{if this.invitation.isComplete "." "!"}}
+        {{/if}}
+      </div>
+
+      {{#if this.needsResponse}}  
+        <div class="mt-8 flex items-center justify-end">
+          <EuiButton 
+            @fill={{true}} 
+            @color="danger" 
+            @iconType="trash" 
+            @isLoading={{this.reject.isRunning}}
+            {{on "click" this.reject.perform}}
+          >
+            Decline Invitation
+          </EuiButton>
+
+          <EuiButton 
+            @color="secondary" 
+            @fill={{true}} 
+            @iconType="check" 
+            @isLoading={{this.accept.isRunning}}
+            {{on "click" this.accept.perform}}
+            class="ml-4"
+          >
+            Accept Invitation
+          </EuiButton>
+        </div>
+      {{/if}}
+
+    </div>
+  {{/if}}
+
+</div>

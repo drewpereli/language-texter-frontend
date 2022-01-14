@@ -2,13 +2,13 @@
 <div class="p-8">
   <div class="text-3xl">
     <span class="font-bold">Challenge progress:</span>
-    <span class="italic text-gray-400 ml-1">"{{@model.challenge.spanishText}}"</span>
+    <span class="italic text-gray-400 ml-1">"{{@model.challenge.learningLanguageText}}"</span>
   </div>
 
   <ChallengeProgressChart @challenge={{@model.challenge}} class="mt-12" />
 
   <div class="flex flex-col md:flex-row md:justify-around mt-12">
-    <ChallengeAttemptWordcloud @challenge={{@model.challenge}} @attemptLanguage="spanish" />
-    <ChallengeAttemptWordcloud @challenge={{@model.challenge}} @attemptLanguage="english" class="mt-8 md:mt-0" />
+    <ChallengeAttemptWordcloud @challenge={{@model.challenge}} @nativeLanguageAttempts={{false}} />
+    <ChallengeAttemptWordcloud @challenge={{@model.challenge}} @nativeLanguageAttempts={{true}} class="mt-8 md:mt-0" />
   </div>
 </div>

@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
-import AttemptModel from 'spanish-texter/models/attempt';
-import ChallengeModel from 'spanish-texter/models/challenge';
+import AttemptModel from 'language-texter/models/attempt';
+import ChallengeModel from 'language-texter/models/challenge';
 
 interface RouteModel {
   challenge: ChallengeModel;

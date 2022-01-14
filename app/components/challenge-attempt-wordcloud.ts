@@ -2,13 +2,12 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import WordCloud from 'wordcloud';
 import { tracked } from '@glimmer/tracking';
-import ChallengeModel from 'spanish-texter/models/challenge';
-import AttemptModel from 'spanish-texter/models/attempt';
-import { Language } from 'custom-types';
+import ChallengeModel from 'language-texter/models/challenge';
+import AttemptModel, { LanguageType } from 'language-texter/models/attempt';
 
 interface Args {
   challenge: ChallengeModel;
-  attemptLanguage: Language;
+  nativeLanguageAttempts?: boolean;
 }
 
 interface TooltipData {
@@ -27,11 +26,17 @@ export default class ChallengeAttemptWordcloudComponent extends Component<Args> 
   @tracked tooltipData: TooltipData | undefined;
 
   get attempts(): AttemptModel[] {
-    return this.args.challenge.attempts.filterBy('attemptLanguage', this.args.attemptLanguage);
+    let attemptLanguage = this.args.nativeLanguageAttempts
+      ? LanguageType.NativeLanguage
+      : LanguageType.LearningLanguage;
+
+    return this.args.challenge.attempts.filter((attempt) => attempt.attemptLanguage === attemptLanguage);
   }
 
   get queryText(): string {
-    return this.args.attemptLanguage === 'spanish' ? this.args.challenge.englishText : this.args.challenge.spanishText;
+    return this.args.nativeLanguageAttempts
+      ? this.args.challenge.learningLanguageText
+      : this.args.challenge.nativeLanguageText;
   }
 
   get attemptCountsByText(): Record<string, { count: number; percentage: number }> {

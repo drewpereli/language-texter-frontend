@@ -1,5 +1,5 @@
-import Application from 'spanish-texter/app';
-import config from 'spanish-texter/config/environment';
+import Application from 'language-texter/app';
+import config from 'language-texter/config/environment';
 import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';

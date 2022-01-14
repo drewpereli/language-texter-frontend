@@ -2,18 +2,24 @@ import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import AttemptModel from './attempt';
 import UserModel from './user';
 import EmberArray from '@ember/array';
+import { ValidationsObject } from 'custom-types';
+import { validateNumber, validatePresence } from 'ember-changeset-validations/validators';
+import Language from './language';
 
 export default class ChallengeModel extends Model {
-  @attr('string', { defaultValue: '' }) declare spanishText: string;
-  @attr('string', { defaultValue: '' }) declare englishText: string;
-  @attr('string') declare spanishTextNote?: string;
-  @attr('string') declare englishTextNote?: string;
-  @attr('number', { defaultValue: 20 }) declare requiredStreakForCompletion: number;
+  @attr('string', { defaultValue: '' }) declare learningLanguageText: string;
+  @attr('string', { defaultValue: '' }) declare nativeLanguageText: string;
+  @attr('string') declare learningLanguageTextNote?: string;
+  @attr('string') declare nativeLanguageTextNote?: string;
+  @attr('number', { defaultValue: 20 }) declare requiredScore: number;
   @attr('number', { defaultValue: 0 }) declare currentStreak: number;
   @attr('string', { defaultValue: 'queued' }) declare status: string;
   @attr('date', { defaultValue: () => new Date() }) declare createdAt: Date;
 
-  @belongsTo('user', { async: false }) declare user: UserModel;
+  @attr('string') declare languageId: string;
+
+  @belongsTo('user', { async: false }) declare creator?: UserModel; // Should only be undefined if new
+  @belongsTo('user', { async: false }) declare student?: UserModel; // Should only be undefined if new
 
   @hasMany('attempts', { async: false }) declare attempts: EmberArray<AttemptModel>;
 
@@ -27,5 +33,22 @@ export default class ChallengeModel extends Model {
 
   get isComplete(): boolean {
     return this.status === 'complete';
+  }
+
+  get language(): Language {
+    return this.store.peekRecord('language', this.languageId);
+  }
+
+  set language(language: Language) {
+    this.languageId = language.id;
+  }
+
+  get Validations(): ValidationsObject {
+    return {
+      languageId: validatePresence({ presence: true, message: "Language can't be blank" }),
+      learningLanguageText: validatePresence({ presence: true, message: `${this.language.name} text can't be blank` }),
+      nativeLanguageText: validatePresence({ presence: true, message: "English text can't be blank" }),
+      requiredScore: validateNumber({ allowBlank: false, gt: 0 }),
+    };
   }
 }

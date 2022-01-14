@@ -1,5 +1,5 @@
 import ActiveModelAdapter from 'active-model-adapter';
-import ENV from 'spanish-texter/config/environment';
+import ENV from 'language-texter/config/environment';
 import { inject as service } from '@ember/service';
 import { SessionService } from 'custom-types';
 
@@ -33,6 +33,6 @@ export default class ApplicationAdapter extends ActiveModelAdapter {
       new_password_confirmation: newPasswordConfirmation,
     };
 
-    return this.ajax(`${this.host}/change_password`, 'POST', { data });
+    return this.ajax(`${this.host}/users/change_password`, 'POST', { data });
   }
 }
