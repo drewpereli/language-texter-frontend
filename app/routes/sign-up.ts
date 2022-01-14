@@ -1,9 +1,9 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { RouteTransition, SessionService } from 'custom-types';
-import SignUpController from 'spanish-texter/controllers/sign-up';
-import Language from 'spanish-texter/models/language';
-import { Timezone } from 'spanish-texter/models/user-settings';
+import SignUpController from 'language-texter/controllers/sign-up';
+import Language from 'language-texter/models/language';
+import { Timezone } from 'language-texter/models/user-settings';
 
 export interface SignUpRouteModel {
   languages: Language[];

@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import Language from 'spanish-texter/models/language';
-import UserSettingsModel from 'spanish-texter/models/user-settings';
-import CurrentUserService from 'spanish-texter/services/current-user';
+import Language from 'language-texter/models/language';
+import UserSettingsModel from 'language-texter/models/user-settings';
+import CurrentUserService from 'language-texter/services/current-user';
 
 export interface SettingsRouteModel {
   userSettings: UserSettingsModel;

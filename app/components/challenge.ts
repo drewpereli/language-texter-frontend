@@ -4,16 +4,16 @@ import { timeout } from 'ember-concurrency';
 import { dropTask, restartableTask } from 'ember-concurrency-decorators';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import GoogleTranslateClient from 'spanish-texter/utils/google-translate-client';
-import ChallengeModel from 'spanish-texter/models/challenge';
+import GoogleTranslateClient from 'language-texter/utils/google-translate-client';
+import ChallengeModel from 'language-texter/models/challenge';
 import { TaskGenerator } from 'ember-concurrency';
 import { EuiToasterService } from 'custom-types';
 import { taskFor } from 'ember-concurrency-ts';
-import CurrentUserService from 'spanish-texter/services/current-user';
-import UserModel from 'spanish-texter/models/user';
-import { LanguageType } from 'spanish-texter/models/attempt';
+import CurrentUserService from 'language-texter/services/current-user';
+import UserModel from 'language-texter/models/user';
+import { LanguageType } from 'language-texter/models/attempt';
 import StorageService from '@ember-data/store';
-import Language from 'spanish-texter/models/language';
+import Language from 'language-texter/models/language';
 interface Args {
   challenge: ChallengeModel;
 }

@@ -1,6 +1,6 @@
-import ENV from 'spanish-texter/config/environment';
+import ENV from 'language-texter/config/environment';
 import fetch from 'fetch';
-import Language from 'spanish-texter/models/language';
+import Language from 'language-texter/models/language';
 
 interface TranslateNamedParams {
   text: string;

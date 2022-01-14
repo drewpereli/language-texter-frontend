@@ -2,8 +2,8 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import WordCloud from 'wordcloud';
 import { tracked } from '@glimmer/tracking';
-import ChallengeModel from 'spanish-texter/models/challenge';
-import AttemptModel, { LanguageType } from 'spanish-texter/models/attempt';
+import ChallengeModel from 'language-texter/models/challenge';
+import AttemptModel, { LanguageType } from 'language-texter/models/attempt';
 
 interface Args {
   challenge: ChallengeModel;

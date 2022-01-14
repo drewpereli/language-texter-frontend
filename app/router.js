@@ -1,5 +1,5 @@
 import EmberRouter from '@ember/routing/router';
-import config from 'spanish-texter/config/environment';
+import config from 'language-texter/config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;

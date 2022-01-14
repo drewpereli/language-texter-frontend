@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { enqueueTask } from 'ember-concurrency-decorators';
 import { TaskGenerator } from 'ember-concurrency';
-import ChallengeModel from 'spanish-texter/models/challenge';
+import ChallengeModel from 'language-texter/models/challenge';
 import { InfinityService } from 'custom-types';
 
 interface Args {

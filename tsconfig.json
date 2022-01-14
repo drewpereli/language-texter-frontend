@@ -19,8 +19,8 @@
     "module": "es6",
     "experimentalDecorators": true,
     "paths": {
-      "spanish-texter/tests/*": ["tests/*"],
-      "spanish-texter/*": ["app/*"],
+      "language-texter/tests/*": ["tests/*"],
+      "language-texter/*": ["app/*"],
       "ember-cli-flash/*": ["node_modules/ember-cli-flash"],
       "fetch": ["node_modules/ember-fetch"],
       "*": ["types/*"]

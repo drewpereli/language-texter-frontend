@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { SessionService } from 'custom-types';
 import StoreService from '@ember-data/store';
-import UserModel from 'spanish-texter/models/user';
+import UserModel from 'language-texter/models/user';
 
 export default class CurrentUserService extends Service {
   @service declare session: SessionService;

@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = function (environment) {
   let ENV = {
-    modulePrefix: 'spanish-texter',
+    modulePrefix: 'language-texter',
     environment,
     rootURL: '/',
     locationType: 'auto',
@@ -47,7 +47,7 @@ module.exports = function (environment) {
   }
 
   if (environment === 'production') {
-    ENV.APP.apiHost = 'https://api.spanishtexter.com';
+    ENV.APP.apiHost = 'https://api.languagetexter.com';
   }
 
   ENV['ember-simple-auth-token'] = {

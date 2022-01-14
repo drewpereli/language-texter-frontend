@@ -7,7 +7,7 @@ import { SessionService, ValidationsObject } from 'custom-types';
 import { EuiToasterService } from 'custom-types';
 import { TaskGenerator } from 'ember-concurrency';
 import { validatePresence, validateConfirmation } from 'ember-changeset-validations/validators';
-import validatePasswordStrength from 'spanish-texter/validators/validate-password-strength';
+import validatePasswordStrength from 'language-texter/validators/validate-password-strength';
 
 const Validations: ValidationsObject = {
   oldPassword: validatePresence(true),

@@ -6,14 +6,14 @@ import { dropTask } from 'ember-concurrency-decorators';
 import { SessionService, ValidationsObject } from 'custom-types';
 import { EuiToasterService } from 'custom-types';
 import fetch from 'fetch';
-import ENV from 'spanish-texter/config/environment';
+import ENV from 'language-texter/config/environment';
 import { capitalize } from '@ember/string';
 import { validatePresence, validateFormat, validateConfirmation } from 'ember-changeset-validations/validators';
-import validatePasswordStrength from 'spanish-texter/validators/validate-password-strength';
-import Language from 'spanish-texter/models/language';
+import validatePasswordStrength from 'language-texter/validators/validate-password-strength';
+import Language from 'language-texter/models/language';
 import StorageService from '@ember-data/store';
-import { Timezone, TIMEZONES } from 'spanish-texter/models/user-settings';
-import { SignUpRouteModel } from 'spanish-texter/routes/sign-up';
+import { Timezone, TIMEZONES } from 'language-texter/models/user-settings';
+import { SignUpRouteModel } from 'language-texter/routes/sign-up';
 
 const Validations: ValidationsObject = {
   username: validatePresence(true),

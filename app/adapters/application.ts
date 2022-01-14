@@ -1,5 +1,5 @@
 import ActiveModelAdapter from 'active-model-adapter';
-import ENV from 'spanish-texter/config/environment';
+import ENV from 'language-texter/config/environment';
 import { inject as service } from '@ember/service';
 import { SessionService } from 'custom-types';
 

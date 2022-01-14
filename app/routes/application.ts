@@ -1,8 +1,8 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { SessionService } from 'custom-types';
-import CurrentUserService from 'spanish-texter/services/current-user';
-import Language from 'spanish-texter/models/language';
+import CurrentUserService from 'language-texter/services/current-user';
+import Language from 'language-texter/models/language';
 
 interface RouteModel {
   languages: Language[];

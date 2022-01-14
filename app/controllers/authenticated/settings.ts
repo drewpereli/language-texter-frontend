@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { dropTask, TaskGenerator } from 'ember-concurrency';
-import { QuestionFrequency, ReminderFrequency, TEXT_TIMES, TIMEZONES } from 'spanish-texter/models/user-settings';
-import { SettingsRouteModel } from 'spanish-texter/routes/authenticated/settings';
+import { QuestionFrequency, ReminderFrequency, TEXT_TIMES, TIMEZONES } from 'language-texter/models/user-settings';
+import { SettingsRouteModel } from 'language-texter/routes/authenticated/settings';
 import { inject as service } from '@ember/service';
 import { EuiToasterService } from 'custom-types';
 
